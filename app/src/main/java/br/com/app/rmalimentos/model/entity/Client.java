@@ -1,0 +1,22 @@
+package br.com.app.rmalimentos.model.entity;
+
+import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+@Entity(tableName = "clients")
+public class Client implements Serializable {
+
+    @PrimaryKey
+    @NonNull
+    private Long id;
+}

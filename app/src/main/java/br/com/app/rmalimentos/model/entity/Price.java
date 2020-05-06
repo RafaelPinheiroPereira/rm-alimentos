@@ -2,11 +2,9 @@ package br.com.app.rmalimentos.model.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,16 +17,19 @@ import lombok.NoArgsConstructor;
 @Entity(tableName = "prices")
 public class Price implements Serializable {
 
-    @Embedded
-    public Payment payment;
-
-    @Embedded
-    public Product product;
-
-    @ColumnInfo(name = "value")
-    BigDecimal value;
-
     @PrimaryKey
     @NonNull
     private Long id;
+
+    @ColumnInfo(name = "value")
+    Double value;
+
+    @ColumnInfo(name = "product_id")
+    private long productId;
+
+    @ColumnInfo(name = "payment_id")
+    private long paymentId;
+
+    @ColumnInfo(name = "unity_code")
+    private String unityCode;
 }

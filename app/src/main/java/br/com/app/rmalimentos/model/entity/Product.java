@@ -2,7 +2,6 @@ package br.com.app.rmalimentos.model.entity;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
-import androidx.room.Embedded;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import java.io.Serializable;
@@ -15,19 +14,15 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
-@Entity(
-        tableName = "products")
+@Entity(tableName = "products")
 public class Product implements Serializable {
-
-    @Embedded
-    public Unity unity;
-
-    @ColumnInfo(name = "description")
-    private String description;
 
     @PrimaryKey
     @NonNull
     private Long id;
+
+    @ColumnInfo(name = "description")
+    private String description;
 
     @ColumnInfo(name = "promotion")
     private String promotion;
@@ -41,6 +36,12 @@ public class Product implements Serializable {
     @ColumnInfo(name = "validity")
     private String validity;
 
-    @ColumnInfo(name = "weight")
-    private String weight;
+    @ColumnInfo(name = "differentiated_weight")
+    private String differentiatedWeight;
+
+    @ColumnInfo(name = "standard_unit")
+    private String standardUnit;
+
+    @ColumnInfo(name = " unit_quantity")
+    private String unitQuantity;
 }

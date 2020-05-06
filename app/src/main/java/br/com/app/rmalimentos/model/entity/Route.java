@@ -17,10 +17,10 @@ import lombok.NoArgsConstructor;
 @Entity(tableName = "routes")
 public class Route implements Serializable {
 
-    @ColumnInfo(name = "description")
-    private String description;
-
     @PrimaryKey
     @NonNull
     private Long id;
+
+    @ColumnInfo(name = "description")
+    private String description;
 }

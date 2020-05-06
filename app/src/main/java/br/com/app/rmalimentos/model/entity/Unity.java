@@ -18,11 +18,11 @@ import lombok.NoArgsConstructor;
 @Entity(
         tableName = "unitys",
         foreignKeys =
-        @ForeignKey(entity = Price.class, parentColumns = "id", childColumns = "price_id"))
+        @ForeignKey(entity = Product.class, parentColumns = "id", childColumns = "product_id"))
 public class Unity implements Serializable {
 
-    @ColumnInfo(name = "price_id")
-    public int priceId;
+    @ColumnInfo(name = "product_id")
+    public int productId;
 
     @ColumnInfo(name = "code")
     private String code;

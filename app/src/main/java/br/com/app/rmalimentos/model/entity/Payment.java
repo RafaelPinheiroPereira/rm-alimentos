@@ -5,22 +5,31 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import java.io.Serializable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@Entity(tableName = "payments")
+@Entity(tableName = "Payment")
 public class Payment implements Serializable {
+
+    @ColumnInfo(name = "description")
+    private String description;
 
     @PrimaryKey
     @NonNull
     private Long id;
 
-    @ColumnInfo(name = "description")
-    private String description;
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    @NonNull
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(@NonNull final Long id) {
+        this.id = id;
+    }
 }

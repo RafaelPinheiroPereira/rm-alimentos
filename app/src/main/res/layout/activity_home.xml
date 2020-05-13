@@ -1,0 +1,71 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:elevation="0dp"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:subtitle="Home"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        </androidx.appcompat.widget.Toolbar>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+        android:orientation="vertical"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rotas"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="20sp"
+                android:layout_marginStart="15dp" />
+
+            <com.tiper.MaterialSpinner
+                android:id="@+id/spn_route"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="10dp"
+            android:id="@+id/rcvCliente"></androidx.recyclerview.widget.RecyclerView>
+
+    </LinearLayout>
+
+
+</LinearLayout>

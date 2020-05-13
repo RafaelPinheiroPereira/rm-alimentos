@@ -3,26 +3,12 @@ package br.com.app.rmalimentos.model.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 import java.io.Serializable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
 @Entity(
-        tableName = "unitys",
-        foreignKeys =
-        @ForeignKey(entity = Product.class, parentColumns = "id", childColumns = "product_id"))
+        tableName = "Unity")
 public class Unity implements Serializable {
-
-    @ColumnInfo(name = "product_id")
-    public int productId;
 
     @ColumnInfo(name = "code")
     private String code;
@@ -34,9 +20,61 @@ public class Unity implements Serializable {
     @ColumnInfo(name = "multiple")
     private float multiple;
 
+    @ColumnInfo(name = "product_id")
+    private int productId;
+
     @ColumnInfo(name = "standard")
     private String standard;
 
     @ColumnInfo(name = "weight")
     private float weight;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(final String code) {
+        this.code = code;
+    }
+
+    @NonNull
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(@NonNull final Long id) {
+        this.id = id;
+    }
+
+    public float getMultiple() {
+        return multiple;
+    }
+
+    public void setMultiple(final float multiple) {
+        this.multiple = multiple;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(final int productId) {
+        this.productId = productId;
+    }
+
+    public String getStandard() {
+        return standard;
+    }
+
+    public void setStandard(final String standard) {
+        this.standard = standard;
+    }
+
+    public float getWeight() {
+        return weight;
+    }
+
+    public void setWeight(final float weight) {
+        this.weight = weight;
+    }
 }

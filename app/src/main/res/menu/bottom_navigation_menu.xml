@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/page_1"
+        android:enabled="true"
+        android:iconTint="@color/bg_swipe_group_item_pinned"
+        android:icon="@drawable/ic_face_white_48dp"
+        android:iconTintMode="add"
+        android:title="@string/clients" />
+
+    <item
+        android:id="@+id/page_2"
+        android:enabled="true"
+        android:icon="@mipmap/ic_cart"
+        android:title="@string/request" />
+
+    <item
+        android:id="@+id/page_3"
+        android:enabled="true"
+        android:icon="@mipmap/ic_upload_black"
+        android:title="@string/upload" />
+    <item
+        android:id="@+id/page_4"
+        android:enabled="true"
+        android:icon="@mipmap/ic_download_black"
+        android:title="@string/donwload" />
+    <item
+        android:id="@+id/page_5"
+        android:enabled="true"
+        android:icon="@mipmap/ic_logout"
+        android:title="@string/exit" />
+</menu>

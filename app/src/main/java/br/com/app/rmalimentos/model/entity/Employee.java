@@ -5,16 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import java.io.Serializable;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@Entity(tableName = "employees")
+@Entity(tableName = "Employee")
 public class Employee implements Serializable {
 
     @PrimaryKey
@@ -27,4 +19,30 @@ public class Employee implements Serializable {
 
     @ColumnInfo(name = "password")
     private String password;
+
+    @NonNull
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(@NonNull final Long id) {
+        this.id = id;
+    }
+
+    @NonNull
+    public String getName() {
+        return name;
+    }
+
+    public void setName(@NonNull final String name) {
+        this.name = name;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(final String password) {
+        this.password = password;
+    }
 }

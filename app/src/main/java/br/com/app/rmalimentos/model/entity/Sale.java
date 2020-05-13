@@ -5,38 +5,77 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import java.sql.Date;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(callSuper = false)
-@Entity(tableName = "sales")
+@Entity(tableName = "Sale")
 public class Sale implements Serializable {
 
-  @PrimaryKey
-  @NonNull
-  private Long id;
-
-  @ColumnInfo(name = "client_id")
-  private long clientId;
 
   @ColumnInfo(name = "amount")
   private double amount;
 
-  @ColumnInfo(name = "payment_description")
-  private double paymentDescription;
+    @ColumnInfo(name = "client_id")
+    private long clientId;
 
   @ColumnInfo(name = "date")
   private Date date;
 
+    @PrimaryKey
+    @NonNull
+    private Long id;
+
+    @ColumnInfo(name = "payment_description")
+    private double paymentDescription;
+
   @ColumnInfo(name = "payment_id")
   private int paymentId;
 
-  List<SaleItem> itens;
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(final double amount) {
+        this.amount = amount;
+    }
+
+    public long getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(final long clientId) {
+        this.clientId = clientId;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(final Date date) {
+        this.date = date;
+    }
+
+    @NonNull
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(@NonNull final Long id) {
+        this.id = id;
+    }
+
+    public double getPaymentDescription() {
+        return paymentDescription;
+    }
+
+    public void setPaymentDescription(final double paymentDescription) {
+        this.paymentDescription = paymentDescription;
+    }
+
+    public int getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(final int paymentId) {
+        this.paymentId = paymentId;
+    }
 }

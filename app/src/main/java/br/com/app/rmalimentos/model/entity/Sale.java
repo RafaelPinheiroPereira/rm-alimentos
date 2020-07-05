@@ -3,79 +3,104 @@ package br.com.app.rmalimentos.model.entity;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+import br.com.app.rmalimentos.model.converter.Converters;
 import java.io.Serializable;
-import java.sql.Date;
+
+import java.util.List;
 
 @Entity(tableName = "Sale")
+@TypeConverters(Converters.class)
 public class Sale implements Serializable {
-
 
   @ColumnInfo(name = "amount")
   private double amount;
 
-    @ColumnInfo(name = "client_id")
-    private long clientId;
+  @ColumnInfo(name = "client_id")
+  private long clientId;
 
-  @ColumnInfo(name = "date")
-  private Date date;
+  @ColumnInfo(name = "date_sale")
+  private String dateSale;
 
-    @PrimaryKey
-    @NonNull
-    private Long id;
+  @PrimaryKey @NonNull private Long id;
 
-    @ColumnInfo(name = "payment_description")
-    private double paymentDescription;
+  @ColumnInfo(name = "payment_description")
+  private String paymentDescription;
 
   @ColumnInfo(name = "payment_id")
-  private int paymentId;
+  private Long paymentId;
 
-    public double getAmount() {
-        return amount;
-    }
+  @Ignore
+  List<SaleItem> saleItemList;
 
-    public void setAmount(final double amount) {
-        this.amount = amount;
-    }
+  public double getAmount() {
+    return amount;
+  }
 
-    public long getClientId() {
-        return clientId;
-    }
+  public void setAmount(final double amount) {
+    this.amount = amount;
+  }
 
-    public void setClientId(final long clientId) {
-        this.clientId = clientId;
-    }
+  public long getClientId() {
+    return clientId;
+  }
 
-    public Date getDate() {
-        return date;
-    }
+  public void setClientId(final long clientId) {
+    this.clientId = clientId;
+  }
 
-    public void setDate(final Date date) {
-        this.date = date;
-    }
+  public String getDateSale() {
+    return dateSale;
+  }
 
-    @NonNull
-    public Long getId() {
-        return id;
-    }
+  public void setDateSale(final String dateSale) {
+    this.dateSale = dateSale;
+  }
 
-    public void setId(@NonNull final Long id) {
-        this.id = id;
-    }
+  @NonNull
+  public Long getId() {
+    return id;
+  }
 
-    public double getPaymentDescription() {
-        return paymentDescription;
-    }
+  public void setId(@NonNull final Long id) {
+    this.id = id;
+  }
 
-    public void setPaymentDescription(final double paymentDescription) {
-        this.paymentDescription = paymentDescription;
-    }
+  public String getPaymentDescription() {
+    return paymentDescription;
+  }
 
-    public int getPaymentId() {
-        return paymentId;
-    }
+  public void setPaymentDescription(final String paymentDescription) {
+    this.paymentDescription = paymentDescription;
+  }
 
-    public void setPaymentId(final int paymentId) {
-        this.paymentId = paymentId;
+  public Long getPaymentId() {
+    return paymentId;
+  }
+
+  public void setPaymentId(final Long paymentId) {
+    this.paymentId = paymentId;
+  }
+
+  public List<SaleItem> getSaleItemList() {
+    return saleItemList;
+  }
+
+  public void setSaleItemList(final List<SaleItem> saleItemList) {
+    this.saleItemList = saleItemList;
+  }
+
+  @Override
+  public boolean equals(final Object obj) {
+    if (this == obj) {
+      return true;
     }
+    if (obj instanceof Sale) {
+      Sale other = (Sale) obj;
+      return id != null && id.equals(other.id);
+    }
+    return false;
+  }
 }

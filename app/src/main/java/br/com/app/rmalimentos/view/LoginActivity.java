@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 import br.com.app.rmalimentos.R;
 import br.com.app.rmalimentos.utils.Constants;
@@ -56,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         this.loadAnimation();
-        loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
+        loginViewModel = new ViewModelProvider(this).get(LoginViewModel.class);
         try {
             abstractActivity = Singleton.getInstance(AbstractActivity.class);
         } catch (InstantiationException e) {
@@ -64,6 +65,9 @@ public class LoginActivity extends AppCompatActivity {
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         }
+
+        edtUser.setText("235");
+        edtPassword.setText("0000000000");
     }
 
     @Override
@@ -81,8 +85,9 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 loginViewModel.readEmployeeFile();
 
-                if (edtUser.getText().equals(loginViewModel.getEmployee().getId())
-                        && edtPassword.getText().equals(loginViewModel.getEmployee().getPassword())) {
+
+                if (edtUser.getText().toString().equals(String.valueOf(loginViewModel.getEmployee().getId()))
+                        &&edtPassword.getText().toString().equals(loginViewModel.getEmployee().getPassword())) {
 
                     loginViewModel.saveEmployee();
                     AbstractActivity.navigateToActivity(this, new Intent(this, HomeActivity.class));
@@ -106,7 +111,7 @@ public class LoginActivity extends AppCompatActivity {
                     mBottomSheetDialog.show();
                 }
 
-            } catch (IOException e) {
+            } catch (IOException | InstantiationException | IllegalAccessException e) {
 
                 abstractActivity.showErrorMessage(LoginActivity.this, e.getMessage());
             }
@@ -121,7 +126,7 @@ public class LoginActivity extends AppCompatActivity {
                             .setPositiveButton(
                                     "OK",
                                     (dialogInterface, which)->{
-                                        AbstractActivity
+                                        abstractActivity
                                                 .showMessage(this, "Por favor, realize a inclusão do arquivo");
 
                                         dialogInterface.dismiss();

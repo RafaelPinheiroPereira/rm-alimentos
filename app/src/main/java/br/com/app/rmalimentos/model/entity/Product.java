@@ -32,10 +32,12 @@ public class Product implements Serializable {
     private String systemDate;
 
     @ColumnInfo(name = " unit_quantity")
-    private String unitQuantity;
+    private int unitQuantity;
 
     @ColumnInfo(name = "validity")
     private String validity;
+
+
 
     public String getDescription() {
         return description;
@@ -94,11 +96,11 @@ public class Product implements Serializable {
         this.systemDate = systemDate;
     }
 
-    public String getUnitQuantity() {
+    public int getUnitQuantity() {
         return unitQuantity;
     }
 
-    public void setUnitQuantity(final String unitQuantity) {
+    public void setUnitQuantity(final int unitQuantity) {
         this.unitQuantity = unitQuantity;
     }
 
@@ -108,5 +110,10 @@ public class Product implements Serializable {
 
     public void setValidity(final String validity) {
         this.validity = validity;
+    }
+
+    @Override
+    public String toString() {
+        return  id + " - "+description ;
     }
 }

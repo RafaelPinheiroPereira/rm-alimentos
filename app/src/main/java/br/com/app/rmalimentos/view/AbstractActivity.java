@@ -15,7 +15,7 @@ public class AbstractActivity extends AppCompatActivity {
         context.startActivity(intent);
     }
 
-    public static void showMessage(Context context, String msg) {
+    public  void showMessage(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 }

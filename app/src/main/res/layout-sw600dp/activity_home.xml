@@ -34,7 +34,7 @@
         android:layout_weight="1" />
 
 
-    <!--> TODO trocar imagens dos icones do navigation bottom <!-->
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
@@ -46,6 +46,8 @@
         app:elevation="-8dp"
         app:itemTextColor="@color/white"
         android:layout_width="match_parent"
+        app:labelVisibilityMode="labeled"
+        app:itemRippleColor="@color/colorAccent"
         app:menu="@menu/bottom_navigation_menu" />
 
 

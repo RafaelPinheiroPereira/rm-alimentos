@@ -58,12 +58,6 @@ dependencies {
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
     androidTestImplementation "android.arch.persistence.room:testing:$room_version"
 
-    //Lombok diminuir verbalizacao do java
-    //def lombok_version = '1.18.10'
-
-    // compileOnly "org.projectlombok:lombok:$lombok_version"
-    // annotationProcessor "org.projectlombok:$lombok_version"
-
     //  Butter Knife
     implementation 'com.jakewharton:butterknife:10.1.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.1.0'
@@ -81,11 +75,13 @@ dependencies {
     def lottie_version = '3.4.0'
     implementation "com.airbnb.android:lottie:$lottie_version"
 
-    //Spinner
-    implementation 'com.github.tiper:MaterialSpinner:1.4.1'
-
     //NavigateDrawer Navigate
     implementation "com.mikepenz:materialdrawer:6.1.2"
 
+    //Cardview novo
+    implementation 'androidx.cardview:cardview:1.0.0-beta01'
+    implementation 'androidx.appcompat:appcompat:1.0.0-beta01'
+    implementation 'com.google.android.material:material:1.0.0-beta01'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0-beta01'
 
 }

@@ -6,75 +6,79 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import java.io.Serializable;
 
-@Entity(
-        tableName = "Unity")
+@Entity(tableName = "Unity")
 public class Unity implements Serializable {
 
-    @ColumnInfo(name = "code")
-    private String code;
+  @ColumnInfo(name = "code")
+  private String code;
 
-    @PrimaryKey
-    @NonNull
-    private Long id;
+  @PrimaryKey(autoGenerate = true)
+  @NonNull
+  private Long id;
 
-    @ColumnInfo(name = "multiple")
-    private float multiple;
+  @ColumnInfo(name = "multiple")
+  private float multiple;
 
-    @ColumnInfo(name = "product_id")
-    private int productId;
+  @ColumnInfo(name = "product_id")
+  private long productId;
 
-    @ColumnInfo(name = "standard")
-    private String standard;
+  @ColumnInfo(name = "standard")
+  private String standard;
 
-    @ColumnInfo(name = "weight")
-    private float weight;
+  @ColumnInfo(name = "weight")
+  private float weight;
 
-    public String getCode() {
-        return code;
-    }
+  @NonNull
+  public Long getId() {
+    return id;
+  }
 
-    public void setCode(final String code) {
-        this.code = code;
-    }
+  public void setId(@NonNull final Long id) {
+    this.id = id;
+  }
 
-    @NonNull
-    public Long getId() {
-        return id;
-    }
+  public float getMultiple() {
+    return multiple;
+  }
 
-    public void setId(@NonNull final Long id) {
-        this.id = id;
-    }
+  public void setMultiple(final float multiple) {
+    this.multiple = multiple;
+  }
 
-    public float getMultiple() {
-        return multiple;
-    }
+  public long getProductId() {
+    return productId;
+  }
 
-    public void setMultiple(final float multiple) {
-        this.multiple = multiple;
-    }
+  public void setProductId(final long productId) {
+    this.productId = productId;
+  }
 
-    public int getProductId() {
-        return productId;
-    }
+  public String getStandard() {
+    return standard;
+  }
 
-    public void setProductId(final int productId) {
-        this.productId = productId;
-    }
+  public void setStandard(final String standard) {
+    this.standard = standard;
+  }
 
-    public String getStandard() {
-        return standard;
-    }
+  public float getWeight() {
+    return weight;
+  }
 
-    public void setStandard(final String standard) {
-        this.standard = standard;
-    }
+  public void setWeight(final float weight) {
+    this.weight = weight;
+  }
 
-    public float getWeight() {
-        return weight;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public void setWeight(final float weight) {
-        this.weight = weight;
-    }
+  public void setCode(final String code) {
+    this.code = code;
+  }
+
+  @Override
+  public String toString() {
+    return code;
+  }
 }

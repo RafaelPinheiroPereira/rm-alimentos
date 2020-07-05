@@ -4,9 +4,10 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import br.com.app.rmalimentos.model.entity.Employee;
+import br.com.app.rmalimentos.repository.EmployeeFileRepository;
 import br.com.app.rmalimentos.repository.EmployeeRepository;
+import br.com.app.rmalimentos.repository.FileManagerRepository;
 import br.com.app.rmalimentos.utils.Constants;
-import br.com.app.rmalimentos.utils.FileManager;
 import br.com.app.rmalimentos.utils.Singleton;
 import java.io.IOException;
 
@@ -16,7 +17,10 @@ public class LoginViewModel extends AndroidViewModel {
 
     private EmployeeRepository employeeRepository;
 
-    FileManager fileManager;
+
+
+    FileManagerRepository fileManagerRepository;
+
 
     public LoginViewModel(@NonNull final Application application)
             throws InstantiationException, IllegalAccessException {
@@ -24,24 +28,23 @@ public class LoginViewModel extends AndroidViewModel {
         super(application);
 
         employeeRepository = new EmployeeRepository(application);
-        fileManager = Singleton.getInstance(FileManager.class);
+        fileManagerRepository= Singleton.getInstance(FileManagerRepository.class);
     }
 
     public boolean employeeFileExists() {
 
-        return fileManager.fileExists(Constants.INPUT_FILES[0]);
+        return fileManagerRepository.fileExists(Constants.INPUT_FILES[0]);
     }
 
-    public void readEmployeeFile() throws IOException {
+    public void readEmployeeFile() throws IOException, InstantiationException, IllegalAccessException {
 
-        fileManager.readEmployeeFile();
-        Employee employee = fileManager.getEmployee();
-        setEmployee(employee);
+        fileManagerRepository.readEmployeeFile();
+        setEmployee(fileManagerRepository.getEmployee());
     }
 
     public void createAppDirectory() throws IOException {
 
-        fileManager.createAppDirectory();
+        fileManagerRepository.createAppDirectory();
     }
 
     public Employee getEmployee() {

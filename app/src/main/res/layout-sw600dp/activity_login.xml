@@ -58,7 +58,6 @@
                 android:hint="@string/password"
                 android:inputType="textPassword"
                 android:padding="10dp"
-
                 android:textColor="@android:color/primary_text_light"
                 android:textSize="20sp" />
         </com.google.android.material.textfield.TextInputLayout>

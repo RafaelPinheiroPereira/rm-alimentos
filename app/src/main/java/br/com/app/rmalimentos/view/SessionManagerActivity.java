@@ -38,10 +38,10 @@ public class SessionManagerActivity extends AppCompatActivity {
                     .observe(
                             this,
                             employees->{
-                                if (!Optional.ofNullable(employees).isPresent()) {
-                                    AbstractActivity.navigateToActivity(
-                                            getApplicationContext(),
-                                            new Intent(SessionManagerActivity.this, LoginActivity.class));
+                                if (employees.size()==0) {
+
+                                    startActivity( new Intent(SessionManagerActivity.this, LoginActivity.class));
+
                                 } else {
 
                                     AbstractActivity.navigateToActivity(

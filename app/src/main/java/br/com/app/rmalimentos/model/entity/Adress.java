@@ -1,84 +1,79 @@
 package br.com.app.rmalimentos.model.entity;
 
-public class Adress {
+import androidx.annotation.NonNull;
+import java.io.Serializable;
 
-    private String city;
+public class Adress  implements Serializable {
 
-    private String description;
+  private String city;
 
-    private int localityCode;
+  private String description;
 
-    private String neighborhood;
+  private int localityCode;
 
-    private int postalCode;
+  private String neighborhood;
 
-    private String referencePoint;
+  private int postalCode;
 
-    private String routeDescription;
+  private String referencePoint;
 
-    private int routeId;
+  public String getCity() {
+    return city;
+  }
 
-    public String getCity() {
-        return city;
-    }
+  public void setCity(final String city) {
+    this.city = city;
+  }
 
-    public void setCity(final String city) {
-        this.city = city;
-    }
+  public String getDescription() {
+    return description;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public void setDescription(final String description) {
+    this.description = description;
+  }
 
-    public void setDescription(final String description) {
-        this.description = description;
-    }
+  public int getLocalityCode() {
+    return localityCode;
+  }
 
-    public int getLocalityCode() {
-        return localityCode;
-    }
+  public void setLocalityCode(final int localityCode) {
+    this.localityCode = localityCode;
+  }
 
-    public void setLocalityCode(final int localityCode) {
-        this.localityCode = localityCode;
-    }
+  public String getNeighborhood() {
+    return neighborhood;
+  }
 
-    public String getNeighborhood() {
-        return neighborhood;
-    }
+  public void setNeighborhood(final String neighborhood) {
+    this.neighborhood = neighborhood;
+  }
 
-    public void setNeighborhood(final String neighborhood) {
-        this.neighborhood = neighborhood;
-    }
+  public int getPostalCode() {
+    return postalCode;
+  }
 
-    public int getPostalCode() {
-        return postalCode;
-    }
+  public void setPostalCode(final int postalCode) {
+    this.postalCode = postalCode;
+  }
 
-    public void setPostalCode(final int postalCode) {
-        this.postalCode = postalCode;
-    }
+  public String getReferencePoint() {
+    return referencePoint;
+  }
 
-    public String getReferencePoint() {
-        return referencePoint;
-    }
+  public void setReferencePoint(final String referencePoint) {
+    this.referencePoint = referencePoint;
+  }
 
-    public void setReferencePoint(final String referencePoint) {
-        this.referencePoint = referencePoint;
-    }
-
-    public String getRouteDescription() {
-        return routeDescription;
-    }
-
-    public void setRouteDescription(final String routeDescription) {
-        this.routeDescription = routeDescription;
-    }
-
-    public int getRouteId() {
-        return routeId;
-    }
-
-    public void setRouteId(final int routeId) {
-        this.routeId = routeId;
-    }
+  @Override
+  public String toString() {
+    return "Adress{" +
+            "city='" + city + '\'' +
+            ", description='" + description + '\'' +
+            ", localityCode=" + localityCode +
+            ", neighborhood='" + neighborhood + '\'' +
+            ", postalCode=" + postalCode +
+            ", referencePoint='" + referencePoint + '\'' +
+            '}';
+  }
 }

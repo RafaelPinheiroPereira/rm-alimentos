@@ -5,6 +5,12 @@ import android.os.Environment;
 
 public class Constants {
 
+    public static final String EXTRA_DATE_SALE = "dateSale";
+    public static final String SPINNER_KEY_POSITION = "spinnerKeyPostion";
+    public static final int TARGET_FRAGMENT_REQUEST_CODE = 1;
+
+    public static final String PREFS_NAME = "Preferences";
+
     public static int REQUEST_STORAGE = 112;
 
     public static String[] PERMISSIONS_STORAGE = {

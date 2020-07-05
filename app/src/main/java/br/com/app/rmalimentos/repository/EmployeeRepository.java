@@ -10,27 +10,25 @@ import java.util.concurrent.ExecutionException;
 
 public class EmployeeRepository {
 
-    private EmployeeDAO employeeDAO;
+  private EmployeeDAO employeeDAO;
 
-    private LiveData<List<Employee>> listLiveData;
+  private LiveData<List<Employee>> listLiveData;
 
-    private AppDataBase appDataBase;
+  private AppDataBase appDataBase;
 
-    public EmployeeRepository(Application application) {
-        appDataBase = AppDataBase.getDatabase(application);
-        employeeDAO = appDataBase.employeeDAO();
+  public EmployeeRepository(Application application) {
+    appDataBase = AppDataBase.getDatabase(application);
+    employeeDAO = appDataBase.employeeDAO();
+  }
 
-    }
+  public LiveData<List<Employee>> getAll() throws ExecutionException, InterruptedException {
 
-    public LiveData<List<Employee>> getAll() throws ExecutionException, InterruptedException {
+    return employeeDAO.getAll();
+  }
 
-        return employeeDAO.getAll();
+  public void save(final Employee employee) {
+    employeeDAO.save(employee);
+  }
 
-    }
-
-    public void save(final Employee employee) {
-        employeeDAO.save(employee);
-    }
-
-    // TODO Implementar uma AsyncTask Generica de consultas
+  // TODO Implementar uma AsyncTask Generica de consultas
 }

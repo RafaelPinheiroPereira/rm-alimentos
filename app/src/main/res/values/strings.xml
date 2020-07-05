@@ -4,7 +4,7 @@
     <string name="username">Matrícula</string>
     <string name="password">Senha</string>
     <string name="todo">TODO</string>
-    <string name="employee_file_not_found_message_alert">O arquivo: PdaVendedor.TXT não foi encontrado.\n
+    <string name="employee_file_not_found_message_alert">O arquivo: PdaVendedor.txt não foi encontrado.\n
         Diretório da aplicação: Download/TRINITY_MOBILE</string>
     <string name="title_activity_home">HomeActivity</string>
     <!-- Strings used for fragments for navigation -->
@@ -18,12 +18,13 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="open_drawer">Aberto</string>
     <string name="close_drawer">Fechado</string>
-    <string name="upload">Importar Dados</string>
-    <string name="donwload">Exportar Dados</string>
+    <string name="upload">Importação</string>
+    <string name="donwload">Exportação</string>
     <string name="clients">Clientes</string>
     <string name="exit">Sair</string>
     <string name="request">Pedidos</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ok">Ok</string>
 </resources>

@@ -6,23 +6,25 @@ import br.com.app.rmalimentos.AppDataBase;
 import br.com.app.rmalimentos.model.dao.RouteDAO;
 import br.com.app.rmalimentos.model.entity.Route;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class RouteRepository {
 
-    private RouteDAO routeDAO;
+  private RouteDAO routeDAO;
 
-    private LiveData<List<Route>> listLiveData;
+  private AppDataBase appDataBase;
 
-    private AppDataBase appDataBase;
+  public RouteRepository(Application application) {
+    appDataBase = AppDataBase.getDatabase(application);
+    routeDAO = appDataBase.routeDAO();
+  }
 
-    public RouteRepository(Application application) {
-        appDataBase = AppDataBase.getDatabase(application);
-        routeDAO = appDataBase.routeDAO();
-    }
+  public LiveData<List<Route>> getAll() {
+    return routeDAO.getAll();
+  }
 
-    public LiveData<List<Route>> getAll() throws ExecutionException, InterruptedException {
+  public void saveAll(final List<Route> routes) {
 
-        return routeDAO.getAll();
-    }
+          this.routeDAO.save(routes.toArray(new Route[routes.size()]));
+
+  }
 }

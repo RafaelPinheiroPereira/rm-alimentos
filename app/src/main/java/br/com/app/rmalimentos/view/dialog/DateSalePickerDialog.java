@@ -34,9 +34,10 @@ public class DateSalePickerDialog extends DialogFragment
 
     /*Existe um bug no calendar relacionado ao mes por isso ha necessidade de acrescentar +1 */
     String strMonth = (month + 1) < 10 ? "0" + (month + 1) : String.valueOf(month + 1);
+    String strDay = (day) < 10 ? "0" + (day) : String.valueOf(day);
 
     Intent intent = new Intent();
-    intent.putExtra(Constants.EXTRA_DATE_SALE, day + "/" + strMonth + "/" + year);
+    intent.putExtra(Constants.EXTRA_DATE_SALE, strDay + "/" + strMonth + "/" + year);
     getTargetFragment().onActivityResult(getTargetRequestCode(), Activity.RESULT_OK, intent);
   }
 }

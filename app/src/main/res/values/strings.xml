@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">rmalimentos</string>
+    <string name="app_name">RM Alimentos</string>
     <string name="login">Login</string>
     <string name="username">Matrícula</string>
     <string name="password">Senha</string>
@@ -27,4 +27,5 @@
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="ok">Ok</string>
+    <string name="action_search">Pesquisar nome,razão social,código,cnpj...</string>
 </resources>

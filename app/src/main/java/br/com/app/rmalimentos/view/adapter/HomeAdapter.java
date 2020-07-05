@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,16 +18,21 @@ import br.com.app.rmalimentos.view.adapter.HomeAdapter.MyViewHolder;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HomeAdapter extends RecyclerView.Adapter<MyViewHolder> implements Filterable {
 
   private LayoutInflater mLayoutInflater;
-  private List<Client> clientList;
+
+    private List<Client> clientOriginalList;
+
+    private List<Client> clientsFiltereds;
   private RecyclerViewOnClickListenerHack recyclerViewOnClickListenerHack;
 
   public HomeAdapter(Context ctx, List<Client> clients) {
     this.mLayoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    this.clientList = clients;
+      this.clientOriginalList = clients;
+      this.clientsFiltereds = clients;
   }
 
   @NonNull
@@ -42,29 +46,58 @@ public class HomeAdapter extends RecyclerView.Adapter<MyViewHolder> implements F
   @Override
   public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
 
-    holder.txtClientId.setText(String.format("%05d", clientList.get(position).getId()));
-    holder.txtNameFantasy.setText(clientList.get(position).getFantasyName());
+      holder.txtClientId.setText(String.format("%05d", clientsFiltereds.get(position).getId()));
+      holder.txtNameFantasy.setText(clientsFiltereds.get(position).getFantasyName());
     String strAdress =
-        clientList.get(position).getAdress().toString() != null
-            ? clientList.get(position).getAdress().getDescription()
+            clientsFiltereds.get(position).getAdress().toString() != null
+                    ? clientsFiltereds.get(position).getAdress().getDescription()
                 + ", "
-                + clientList.get(position).getAdress().getNeighborhood()
+                    + clientsFiltereds.get(position).getAdress().getNeighborhood()
             : "";
     holder.txtAdress.setText(strAdress);
   }
 
   public Client getItem(int position) {
-    return this.clientList.get(position);
+      return this.clientsFiltereds.get(position);
   }
 
   @Override
   public int getItemCount() {
-    return this.clientList.size();
+      return this.clientsFiltereds.size();
   }
 
   @Override
   public Filter getFilter() {
-    return null;
+      return new Filter() {
+          @Override
+          protected FilterResults performFiltering(final CharSequence constraint) {
+              FilterResults filterResults = new FilterResults();
+              if (constraint.toString().isEmpty()) {
+                  filterResults.values = clientOriginalList;
+              } else {
+                  filterResults.values = clientOriginalList.stream()
+                          .filter(
+                                  client->
+                                          client
+                                                  .getFantasyName()
+                                                  .toLowerCase()
+                                                  .contains(constraint.toString().toLowerCase())
+                                                  || String.valueOf(client.getId())
+                                                  .contains(constraint.toString())).collect(Collectors.toList());
+              }
+
+              return filterResults;
+
+          }
+
+          @Override
+          protected void publishResults(final CharSequence constraint, final FilterResults results) {
+
+              clientsFiltereds = (List<Client>) results.values;
+
+              notifyDataSetChanged();
+          }
+      };
   }
 
   public class MyViewHolder extends RecyclerView.ViewHolder implements OnClickListener {

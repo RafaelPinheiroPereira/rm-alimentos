@@ -4,22 +4,27 @@ import static br.com.app.rmalimentos.utils.Constants.EXTRA_DATE_SALE;
 import static br.com.app.rmalimentos.utils.Constants.TARGET_FRAGMENT_REQUEST_CODE;
 
 import android.app.Activity;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.LiveData;
@@ -41,7 +46,6 @@ import br.com.app.rmalimentos.view.dialog.DateSalePickerDialog;
 import br.com.app.rmalimentos.viewmodel.HomeViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnItemSelected;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,6 +88,9 @@ public class HomeFragment extends Fragment
 
   HomeAdapter homeAdapter;
 
+  private SearchView searchView = null;
+
+  private SearchView.OnQueryTextListener queryTextListener;
 
   public static HomeFragment newInstance() {
     return new HomeFragment();
@@ -105,6 +112,12 @@ public class HomeFragment extends Fragment
     }
 
     return view;
+  }
+
+  @Override
+  public void onCreate(@Nullable final Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setHasOptionsMenu(true);
   }
 
   @Override
@@ -131,48 +144,87 @@ public class HomeFragment extends Fragment
       abstractActivity.showErrorMessage(getActivity(), e.getMessage());
     }
 
-    rdAll.setOnCheckedChangeListener((buttonView, isChecked)->{
-      if(isChecked){
+    rdAll.setOnCheckedChangeListener(
+            (buttonView, isChecked)->{
+              if (isChecked) {
 
-        getAllClientsChecked();
-      }
-    });
+                getAllClientsChecked();
+              }
+            });
 
-    rdPositives.setOnCheckedChangeListener((buttonView, isChecked)->{
+    rdPositives.setOnCheckedChangeListener(
+            (buttonView, isChecked)->{
+              if (isChecked) {
 
+                getAllPositived();
+              }
+            });
 
-      if(isChecked){
+    rdNotPositives.setOnCheckedChangeListener(
+            (buttonView, isChecked)->{
+              if (isChecked) {
 
-        getAllPositived();
-      }
+                getAllNotPositived();
+              }
+            });
+  }
 
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    inflater.inflate(R.menu.home_menu, menu);
+    MenuItem searchItem = menu.findItem(R.id.action_search);
+    SearchManager searchManager =
+            (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
 
-    });
+    if (searchItem != null) {
+      searchView = (SearchView) searchItem.getActionView();
+    }
+    if (searchView != null) {
+      searchView.setSearchableInfo(
+              searchManager.getSearchableInfo(getActivity().getComponentName()));
 
-    rdNotPositives.setOnCheckedChangeListener((buttonView, isChecked)->{
+      queryTextListener =
+              new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextChange(String query) {
 
+                  homeAdapter.getFilter().filter(query);
+                  return true;
+                }
 
-      if(isChecked){
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                  Log.i("onQueryTextSubmit", query);
+                  homeAdapter.getFilter().filter(query);
+                  return true;
+                }
+              };
+      searchView.setOnQueryTextListener(queryTextListener);
+    }
+    super.onCreateOptionsMenu(menu, inflater);
+  }
 
-
-        getAllNotPositived();
-      }
-
-    });
-
-
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+      case R.id.action_search:
+        // Not implemented here
+        return false;
+      default:
+        break;
+    }
+    searchView.setOnQueryTextListener(queryTextListener);
+    return super.onOptionsItemSelected(item);
   }
 
   private void getAllNotPositived() {
-    int position=this.getRouteSpinnerPosition();
+    int position = this.getRouteSpinnerPosition();
     Route route = (Route) routesAdapter.getItem(position);
     LiveData<List<Client>> clientListLiveData =
-            mViewModel.getNotPositived(
-                    edtDateSale.getText().toString(),
-                    route);
+            mViewModel.getNotPositived(edtDateSale.getText().toString(), route);
     clientListLiveData.observe(
             this,
-            clients -> {
+            clients->{
               Collections.sort(clients, Comparator.comparing(Client::getRouteOrder));
               homeAdapter = new HomeAdapter(getActivity(), clients);
 
@@ -183,7 +235,7 @@ public class HomeFragment extends Fragment
 
   private void getAllClientsChecked() {
     if (this.getRouteSpinnerPosition() != 0) {
-      int position=this.getRouteSpinnerPosition();
+      int position = this.getRouteSpinnerPosition();
       Route route = (Route) routesAdapter.getItem(position);
       loadAllClientByRoute(route);
     } else {
@@ -198,15 +250,13 @@ public class HomeFragment extends Fragment
   }
 
   private void getAllPositived() {
-    int position=this.getRouteSpinnerPosition();
+    int position = this.getRouteSpinnerPosition();
     Route route = (Route) routesAdapter.getItem(position);
     LiveData<List<Client>> clientListLiveData =
-            mViewModel.getPositivedClients(
-                    edtDateSale.getText().toString(),
-                    route);
+            mViewModel.getPositivedClients(edtDateSale.getText().toString(), route);
     clientListLiveData.observe(
             this,
-            clients -> {
+            clients->{
               Collections.sort(clients, Comparator.comparing(Client::getRouteOrder));
               homeAdapter = new HomeAdapter(getActivity(), clients);
 
@@ -218,7 +268,8 @@ public class HomeFragment extends Fragment
   private void setAdapter() {
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
     rcvHome.setLayoutManager(linearLayoutManager);
-    routesAdapter= new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, new ArrayList());
+    routesAdapter =
+            new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, new ArrayList());
     homeAdapter = new HomeAdapter(getActivity(), new ArrayList<>());
     rcvHome.setAdapter(homeAdapter);
   }
@@ -349,19 +400,16 @@ public class HomeFragment extends Fragment
   @Override
   public void onLongPressClickListener(final View view, final int position) {}
 
-
-
   @OnItemSelected(R.id.spn_route)
   void onRouteItemSelected(int position) {
     setRouteSpinnerPosition(position);
-    if(rdAll.isChecked()){
+    if (rdAll.isChecked()) {
       this.getAllClientsChecked();
-    }else if(rdPositives.isChecked()){
+    } else if (rdPositives.isChecked()) {
       this.getAllPositived();
-    }else{
+    } else {
       this.getAllNotPositived();
     }
-
   }
 
   private void loadAllClientByRoute(final Route route) {

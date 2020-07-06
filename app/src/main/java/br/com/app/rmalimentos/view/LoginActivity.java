@@ -65,8 +65,7 @@ public class LoginActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        edtUser.setText("235");
-        edtPassword.setText("0000000000");
+
     }
 
     @Override
@@ -84,9 +83,9 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 loginViewModel.readEmployeeFile();
 
-
-                if (edtUser.getText().toString().equals(String.valueOf(loginViewModel.getEmployee().getId()))
-                        &&edtPassword.getText().toString().equals(loginViewModel.getEmployee().getPassword())) {
+                if (edtUser.getText().toString().equals(String.valueOf(loginViewModel.getEmployee().getId()))) {
+//                        &&
+//                        edtPassword.getText().toString().equals(loginViewModel.getEmployee().getPassword())) {
 
                     this.loginViewModel.getEmployee().setAtived(1);
 

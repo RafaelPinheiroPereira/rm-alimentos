@@ -27,7 +27,8 @@ public class SaleItemAdapter extends RecyclerView.Adapter<SaleItemAdapter.MyView
   public void onBindViewHolder(
       @NonNull final SaleItemAdapter.MyViewHolder holder, final int position) {
 
-    holder.txtProductDescription.setText(String.format("%05d ",this.saleViewModel.getSaleItems().get(position).getId())+
+      holder.txtProductDescription
+              .setText(String.format("%05d ", this.saleViewModel.getSaleItems().get(position).getProductId()) +
         this.saleViewModel.getSaleItems().get(position).getDescription());
     holder.txtUnity.setText(
         this.saleViewModel.getSaleItems().get(position).getQuantity()

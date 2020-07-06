@@ -21,13 +21,35 @@ public class EmployeeRepository {
     employeeDAO = appDataBase.employeeDAO();
   }
 
+  public Employee findEmployeeById(final Long id) {
+    return employeeDAO.findEmployeeById(id);
+  }
+
   public LiveData<List<Employee>> getAll() throws ExecutionException, InterruptedException {
 
     return employeeDAO.getAll();
   }
 
+  public Employee getEmployeeActived() {
+    return this.employeeDAO.getAtivedEmployee();
+  }
+
+  public Employee findSessionEmployee() {
+    return this.employeeDAO.findSessionEmployee();
+  }
+
+  public void removeUserSession() {
+    Employee employee = this.findSessionEmployee();
+    employee.setAtived(0);
+    this.employeeDAO.update(employee);
+  }
+
   public void save(final Employee employee) {
     employeeDAO.save(employee);
+  }
+
+  public void updateEmployee(final Employee employee) {
+    employeeDAO.update(employee);
   }
 
   // TODO Implementar uma AsyncTask Generica de consultas

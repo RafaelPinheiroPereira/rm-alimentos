@@ -16,7 +16,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import br.com.app.rmalimentos.R;
 import br.com.app.rmalimentos.utils.Constants;
 import br.com.app.rmalimentos.utils.Singleton;
@@ -89,7 +88,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (edtUser.getText().toString().equals(String.valueOf(loginViewModel.getEmployee().getId()))
                         &&edtPassword.getText().toString().equals(loginViewModel.getEmployee().getPassword())) {
 
-                    loginViewModel.saveEmployee();
+                    this.loginViewModel.getEmployee().setAtived(1);
+
+                    if (this.loginViewModel.isExistEmployee()) {
+                        loginViewModel.updateEmployee();
+                    } else {
+                        loginViewModel.saveEmployee();
+                    }
+
                     AbstractActivity.navigateToActivity(this, new Intent(this, HomeActivity.class));
 
                 } else {

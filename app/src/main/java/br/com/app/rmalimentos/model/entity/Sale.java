@@ -8,7 +8,7 @@ import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
 import br.com.app.rmalimentos.model.converter.Converters;
 import java.io.Serializable;
-
+import java.util.Date;
 import java.util.List;
 
 @Entity(tableName = "Sale")
@@ -21,8 +21,10 @@ public class Sale implements Serializable {
   @ColumnInfo(name = "client_id")
   private long clientId;
 
+
   @ColumnInfo(name = "date_sale")
-  private String dateSale;
+  @TypeConverters(Converters.class)
+  public Date dateSale;
 
   @PrimaryKey @NonNull private Long id;
 
@@ -32,7 +34,7 @@ public class Sale implements Serializable {
   @ColumnInfo(name = "payment_id")
   private Long paymentId;
 
-  @Ignore
+    @Ignore
   List<SaleItem> saleItemList;
 
   public double getAmount() {
@@ -51,11 +53,11 @@ public class Sale implements Serializable {
     this.clientId = clientId;
   }
 
-  public String getDateSale() {
+    public Date getDateSale() {
     return dateSale;
   }
 
-  public void setDateSale(final String dateSale) {
+    public void setDateSale(final Date dateSale) {
     this.dateSale = dateSale;
   }
 
@@ -103,4 +105,6 @@ public class Sale implements Serializable {
     }
     return false;
   }
+
+
 }

@@ -3,11 +3,9 @@ package br.com.app.rmalimentos.view;
 import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.ViewModelProvider;
 import br.com.app.rmalimentos.utils.Singleton;
 import br.com.app.rmalimentos.viewmodel.SessionManagerViewModel;
-import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 public class SessionManagerActivity extends AppCompatActivity {
 
@@ -18,7 +16,7 @@ public class SessionManagerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionManagerViewModel = ViewModelProviders.of(this).get(SessionManagerViewModel.class);
+        sessionManagerViewModel = new ViewModelProvider(this).get(SessionManagerViewModel.class);
         try {
             abstractActivity = Singleton.getInstance(AbstractActivity.class);
         } catch (InstantiationException e) {
@@ -32,27 +30,14 @@ public class SessionManagerActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        try {
-            this.sessionManagerViewModel
-                    .checkedLogin()
-                    .observe(
-                            this,
-                            employees->{
-                                if (employees.size()==0) {
-
-                                    startActivity( new Intent(SessionManagerActivity.this, LoginActivity.class));
-
-                                } else {
-
-                                    AbstractActivity.navigateToActivity(
-                                            getApplicationContext(),
-                                            new Intent(SessionManagerActivity.this, HomeActivity.class));
-                                }
-                            });
-        } catch (ExecutionException e) {
-            abstractActivity.showErrorMessage(getApplicationContext(), e.getMessage());
-        } catch (InterruptedException e) {
-            abstractActivity.showErrorMessage(getApplicationContext(), e.getMessage());
+        if (this.sessionManagerViewModel.checkedLogin()) {
+            AbstractActivity.navigateToActivity(
+                    getApplicationContext(),
+                    new Intent(SessionManagerActivity.this, HomeActivity.class));
+        } else {
+            startActivity(new Intent(SessionManagerActivity.this, LoginActivity.class));
         }
+
+
     }
 }

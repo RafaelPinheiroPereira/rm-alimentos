@@ -6,7 +6,6 @@ import br.com.app.rmalimentos.AppDataBase;
 import br.com.app.rmalimentos.model.dao.SaleItemDAO;
 import br.com.app.rmalimentos.model.entity.SaleItem;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SaleItemRepository {
   private SaleItemDAO saleItemDAO;
@@ -24,6 +23,10 @@ public class SaleItemRepository {
   public LiveData<List<SaleItem>> findSaleItemBySale(final Long saleId) {
     return this.saleItemDAO.findItensBySale(saleId);
   }
+
+    public List<SaleItem> findItensToExport(final Long saleId) {
+        return this.saleItemDAO.findItensToExport(saleId);
+    }
 
   public void insertItens(final List<SaleItem> saleItemList) {
     this.saleItemDAO.insert(saleItemList.toArray(new SaleItem[saleItemList.size()]));

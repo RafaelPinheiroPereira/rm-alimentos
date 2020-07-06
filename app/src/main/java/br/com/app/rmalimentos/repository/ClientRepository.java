@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import br.com.app.rmalimentos.AppDataBase;
 import br.com.app.rmalimentos.model.dao.ClientDAO;
 import br.com.app.rmalimentos.model.entity.Client;
+import java.util.Date;
 import java.util.List;
 
 public class ClientRepository {
@@ -18,11 +19,12 @@ public class ClientRepository {
         this.clientDAO=this.appDataBase.clientDAO();
     }
 
-    public LiveData<List<Client>> findNotPositived(final String dateSale, final Long routeId) {
+    public LiveData<List<Client>> findNotPositived(final Date dateSale, final Long routeId) {
+
         return this.clientDAO.findNotPositivedClient(dateSale,routeId);
     }
 
-    public LiveData<List<Client>> findPositivedClient(final String dateSale, final Long routeId) {
+    public LiveData<List<Client>> findPositivedClient(final Date dateSale, final Long routeId) {
         return this.clientDAO.findPositivedClient(dateSale,routeId);
     }
 

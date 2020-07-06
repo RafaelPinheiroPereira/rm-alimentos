@@ -49,6 +49,7 @@ import butterknife.OnClick;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shreyaspatil.MaterialDialog.MaterialDialog;
 import java.math.BigDecimal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -101,6 +102,9 @@ public class SaleActivity extends AppCompatActivity {
   @BindView(R.id.txt_total_value_product)
   TextView txtTotalValueProduct;
 
+    @BindView(R.id.txt_amount_sale)
+    TextView txtAmountSale;
+
   SaleViewModel saleViewModel;
 
   ArrayAdapter paymentsAdapter;
@@ -133,7 +137,11 @@ public class SaleActivity extends AppCompatActivity {
     } catch (IllegalAccessException e) {
       e.printStackTrace();
     }
-    this.getParentActivityData();
+      try {
+          this.getParentActivityData();
+      } catch (ParseException e) {
+          e.printStackTrace();
+      }
     this.setClientData();
     try {
       this.setAdapters();
@@ -297,25 +305,28 @@ public class SaleActivity extends AppCompatActivity {
 
             if (direction == ItemTouchHelper.LEFT) {
 
-
               SaleItem saleItemToRemove = saleViewModel.getSaleItems().get(position);
-              saleViewModel.getSaleItems().remove(position);
+
               if (Optional.ofNullable(saleItemToRemove.getId()).isPresent()) {
                 saleViewModel.deleteSaleItem(saleItemToRemove);
-              } else {
-                saleViewModel.getSale().setSaleItemList(saleViewModel.getSaleItems());
-              }
+                  saleViewModel.getSaleItems().remove(position);
 
+              } else {
+                  saleViewModel.getSaleItems().remove(position);
+
+              }
+                updateTxtAmountSaleView();
             } else {
 
               this.showEditSaleItem(saleViewModel, position);
+
             }
             updateRecicleView();
           }
 
           private void showEditSaleItem(final SaleViewModel saleViewModel, final int position) {
             DialogFragment dialog =
-                new EditSaleItemDialog(saleViewModel, position, saleItemAdapter);
+                    new EditSaleItemDialog(saleViewModel, position, saleItemAdapter, txtAmountSale);
             /*Se ainda nao foi instanciado*/
             if (!dialog.isAdded()) {
               dialog.show(getSupportFragmentManager(), "datePicker");
@@ -326,6 +337,7 @@ public class SaleActivity extends AppCompatActivity {
             else {
               getSupportFragmentManager().beginTransaction().remove(dialog).commit();
             }
+
             updateRecicleView();
           }
         };
@@ -381,6 +393,7 @@ public class SaleActivity extends AppCompatActivity {
                         this.saleViewModel.setSaleItems(saleItems);
                         saleItemAdapter = new SaleItemAdapter(this, this.saleViewModel);
                         rcvSaleItem.setAdapter(saleItemAdapter);
+                          updateTxtAmountSaleView();
                       });
             });
   }
@@ -451,13 +464,14 @@ public class SaleActivity extends AppCompatActivity {
   }
 
   /*Obtem os dados da HomeActivity*/
-  private void getParentActivityData() {
+  private void getParentActivityData() throws ParseException {
 
     Bundle args = getIntent().getExtras();
 
     if (args != null) {
       this.saleViewModel.setClient((Client) args.getSerializable("keyClient"));
-      this.saleViewModel.setDateSale(args.getString("keyDateSale"));
+        this.saleViewModel.setDateSale(
+                DateFormat.getDateInstance(DateFormat.SHORT).parse(args.getString("keyDateSale")));
     }
   }
 
@@ -488,6 +502,7 @@ public class SaleActivity extends AppCompatActivity {
     edtQtd.setText("1");
     cetPrice.setText("0.00");
     txtTotalValueProduct.setText(MonetaryFormatting.convertToReal(0.00));
+      txtAmountSale.setText(MonetaryFormatting.convertToReal(0.00));
   }
 
   @Override
@@ -514,6 +529,7 @@ public class SaleActivity extends AppCompatActivity {
           == 0) {
         this.saleViewModel.insertItem(saleItem);
         this.updateRecicleView();
+          this.updateTxtAmountSaleView();
 
       } else {
         abstractActivity.showMessage(this, "O item já existe na lista!");
@@ -523,6 +539,10 @@ public class SaleActivity extends AppCompatActivity {
       abstractActivity.showMessage(this, "Verifique os campos obrigatórios,por favor!");
     }
   }
+
+    private void updateTxtAmountSaleView() {
+        this.txtAmountSale.setText(MonetaryFormatting.convertToReal(this.saleViewModel.getAmount()));
+    }
 
   @OnClick(R.id.fb_save_sale)
   public void saveSale(View view) {
@@ -602,6 +622,8 @@ public class SaleActivity extends AppCompatActivity {
   /*Atualiza o recycle view*/
   private void updateRecicleView() {
     saleItemAdapter.notifyDataSetChanged();
+
+
   }
 
   /*Prepara a inserçao do item */
@@ -638,4 +660,8 @@ public class SaleActivity extends AppCompatActivity {
 
     return true;
   }
+
+    @Override
+    public void onBackPressed() {
+    }
 }

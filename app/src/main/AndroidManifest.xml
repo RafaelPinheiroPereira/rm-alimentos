@@ -15,7 +15,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.SaleActivity"
+        <activity
+            android:name=".view.ExportActivity"
+            android:parentActivityName=".view.HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="view.ExportActivity" />
+        </activity>
+        <activity
+            android:name=".view.SaleActivity"
             android:parentActivityName=".view.HomeActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

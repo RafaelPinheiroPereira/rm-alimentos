@@ -5,7 +5,6 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 import br.com.app.rmalimentos.model.entity.SaleItem;
-import br.com.app.rmalimentos.utils.AsyntaskResponse;
 import java.util.List;
 
 @Dao
@@ -13,6 +12,9 @@ public abstract class SaleItemDAO extends  GenericDAO<SaleItem> {
 
     @Query("select * from saleitem where  sale_id = :saleId")
     public abstract LiveData<List<SaleItem>> findItensBySale(Long saleId);
+
+    @Query("select * from saleitem where  sale_id = :saleId")
+    public abstract List<SaleItem> findItensToExport(Long saleId);
 
     private class OperationsAsyncTask extends AsyncTask<SaleItem, Void, Void> {
 

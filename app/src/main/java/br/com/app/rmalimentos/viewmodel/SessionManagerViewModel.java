@@ -3,11 +3,8 @@ package br.com.app.rmalimentos.viewmodel;
 import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
-import br.com.app.rmalimentos.model.entity.Employee;
 import br.com.app.rmalimentos.repository.EmployeeRepository;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.Optional;
 
 public class SessionManagerViewModel extends AndroidViewModel {
 
@@ -21,8 +18,8 @@ public class SessionManagerViewModel extends AndroidViewModel {
         employeeRepository = new EmployeeRepository(application);
     }
 
-    public LiveData<List<Employee>> checkedLogin() throws ExecutionException, InterruptedException {
+    public boolean checkedLogin() {
+        return Optional.ofNullable(employeeRepository.getEmployeeActived()).isPresent();
 
-        return employeeRepository.getAll();
     }
 }

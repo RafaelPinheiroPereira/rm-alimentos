@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 import br.com.app.rmalimentos.model.entity.Client;
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -12,12 +13,12 @@ public abstract class ClientDAO extends GenericDAO<Client> {
   @Query(
       value =
           "select c.* from client c,sale s where c.id=s.client_id and c.route_id= :routeId and s.date_sale= :dateSale ORDER BY c.route_order")
-  public abstract LiveData<List<Client>> findPositivedClient(final String dateSale,final Long routeId);
+  public abstract LiveData<List<Client>> findPositivedClient(final Date dateSale, final Long routeId);
 
     @Query(
             value =
-                    "select c.* from client c,sale s where c.id!=s.client_id and c.route_id= :routeId and s.date_sale!= :dateSale ORDER BY c.route_order")
-    public abstract LiveData<List<Client>> findNotPositivedClient(final String dateSale,Long routeId);
+                    "select c.* from client c where c.id not in (select c.id from client c,sale s where c.id=s.client_id and c.route_id= :routeId and s.date_sale= :dateSale) ORDER BY c.route_order")
+    public abstract LiveData<List<Client>> findNotPositivedClient(final Date dateSale, Long routeId);
 
   @Query(value = "select * from client  ORDER BY route_order")
   public abstract LiveData<List<Client>> getAll();

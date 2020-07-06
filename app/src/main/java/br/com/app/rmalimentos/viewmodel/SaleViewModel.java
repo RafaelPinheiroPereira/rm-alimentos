@@ -2,15 +2,10 @@ package br.com.app.rmalimentos.viewmodel;
 
 import android.app.Application;
 import android.content.Context;
-import android.widget.ArrayAdapter;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 import br.com.app.rmalimentos.model.entity.Client;
-import br.com.app.rmalimentos.model.entity.Employee;
 import br.com.app.rmalimentos.model.entity.Payment;
 import br.com.app.rmalimentos.model.entity.Price;
 import br.com.app.rmalimentos.model.entity.Product;
@@ -23,12 +18,9 @@ import br.com.app.rmalimentos.repository.ProductRepository;
 import br.com.app.rmalimentos.repository.SaleItemRepository;
 import br.com.app.rmalimentos.repository.SaleRepository;
 import br.com.app.rmalimentos.repository.UnityRepository;
-import br.com.app.rmalimentos.tasks.InsertSaleItensTask;
-import br.com.app.rmalimentos.utils.AsyntaskResponse;
-import br.com.app.rmalimentos.utils.DateUtils;
 import java.math.BigDecimal;
 import java.text.ParseException;
-import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -42,8 +34,8 @@ public class SaleViewModel extends AndroidViewModel   {
   Unity unitySelected;
   Payment paymentSelected;
   Client client;
-  Employee employee;
-  String dateSale;
+
+    Date dateSale;
   Sale sale;
   List<SaleItem> saleItems;
 
@@ -138,32 +130,24 @@ public class SaleViewModel extends AndroidViewModel   {
     public LiveData<Sale> searchSaleByDateAndClient() {
 
     return this.saleRepository.findSaleByDateAndClient(
-       this.getDateSale(), this.getClient().getId());
+            this.getDateSale(), this.getClient().getId());
   }
 
   public void setClient(final Client client) {
     this.client = client;
   }
 
-  public Employee getEmployee() {
-    return employee;
-  }
-
-  public void setEmployee(final Employee employee) {
-    this.employee = employee;
-  }
-
-  public String getDateSale() {
+    public Date getDateSale() {
     return dateSale;
   }
 
-  public void setDateSale(final String dateSale) {
+    public void setDateSale(final Date dateSale) {
     this.dateSale = dateSale;
   }
 
   public LiveData<Sale> findSaleByDate() throws ParseException {
     return saleRepository.findSaleByDate(
-        DateUtils.converterStringParaDate(this.getDateSale()).getTime());
+            this.getDateSale());
   }
 
   public BigDecimal getProductQuantity() {

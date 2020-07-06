@@ -1,7 +1,7 @@
 package br.com.app.rmalimentos.model.converter;
 
 import androidx.room.TypeConverter;
-import java.sql.Date;
+import java.util.Date;
 
 public class Converters {
 

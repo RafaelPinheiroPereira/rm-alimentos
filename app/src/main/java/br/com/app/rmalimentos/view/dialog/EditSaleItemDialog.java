@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,16 +51,20 @@ public class EditSaleItemDialog extends DialogFragment {
   Button btnSave;
 
   SaleViewModel saleViewModel;
+
+  TextView txtAmount;
   int position;
   ArrayAdapter unitiesAdapter;
   SaleItem salemItemToUpdate;
   SaleItemAdapter saleItemAdapter;
 
-  public EditSaleItemDialog(final SaleViewModel saleViewModel, final int position,SaleItemAdapter saleItemAdapter) {
+  public EditSaleItemDialog(final SaleViewModel saleViewModel, final int position, SaleItemAdapter saleItemAdapter,
+          final TextView txtViewAmount) {
     this.saleViewModel = saleViewModel;
     this.position = position;
     salemItemToUpdate = this.saleViewModel.getSaleItems().get(this.position);
     this.saleItemAdapter=saleItemAdapter;
+    this.txtAmount = txtViewAmount;
   }
 
 
@@ -125,7 +128,8 @@ public class EditSaleItemDialog extends DialogFragment {
         salemItemToUpdate.setValue(cetPrice.getCurrencyDouble());
         salemItemToUpdate.setTotalValue(salemItemToUpdate.getQuantity()*salemItemToUpdate.getValue());
         this.saleViewModel.getSaleItems().set(position,salemItemToUpdate);
-        this.saleViewModel.getSale().setSaleItemList(this.saleViewModel.getSaleItems());
+      txtAmount.setText(MonetaryFormatting.convertToReal(saleViewModel.getAmount()));
+
 
         this.saleItemAdapter.notifyDataSetChanged();
 

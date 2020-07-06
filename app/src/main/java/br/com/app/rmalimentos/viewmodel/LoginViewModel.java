@@ -4,12 +4,12 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import br.com.app.rmalimentos.model.entity.Employee;
-import br.com.app.rmalimentos.repository.EmployeeFileRepository;
 import br.com.app.rmalimentos.repository.EmployeeRepository;
 import br.com.app.rmalimentos.repository.FileManagerRepository;
 import br.com.app.rmalimentos.utils.Constants;
 import br.com.app.rmalimentos.utils.Singleton;
 import java.io.IOException;
+import java.util.Optional;
 
 public class LoginViewModel extends AndroidViewModel {
 
@@ -36,6 +36,10 @@ public class LoginViewModel extends AndroidViewModel {
         return fileManagerRepository.fileExists(Constants.INPUT_FILES[0]);
     }
 
+    public boolean isExistEmployee() {
+        return Optional.ofNullable(this.employeeRepository.findEmployeeById(this.getEmployee().getId())).isPresent();
+    }
+
     public void readEmployeeFile() throws IOException, InstantiationException, IllegalAccessException {
 
         fileManagerRepository.readEmployeeFile();
@@ -53,6 +57,10 @@ public class LoginViewModel extends AndroidViewModel {
 
     public void saveEmployee() {
         employeeRepository.save(this.getEmployee());
+    }
+
+    public void updateEmployee() {
+        employeeRepository.updateEmployee(this.getEmployee());
     }
 
     private void setEmployee(final Employee employee) {

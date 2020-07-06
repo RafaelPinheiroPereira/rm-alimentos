@@ -47,6 +47,7 @@ import br.com.app.rmalimentos.viewmodel.HomeViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemSelected;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -156,7 +157,11 @@ public class HomeFragment extends Fragment
             (buttonView, isChecked)->{
               if (isChecked) {
 
-                getAllPositived();
+                  try {
+                      getAllPositived();
+                  } catch (ParseException e) {
+                      e.printStackTrace();
+                  }
               }
             });
 
@@ -164,7 +169,11 @@ public class HomeFragment extends Fragment
             (buttonView, isChecked)->{
               if (isChecked) {
 
-                getAllNotPositived();
+                  try {
+                      getAllNotPositived();
+                  } catch (ParseException e) {
+                      e.printStackTrace();
+                  }
               }
             });
   }
@@ -217,7 +226,7 @@ public class HomeFragment extends Fragment
     return super.onOptionsItemSelected(item);
   }
 
-  private void getAllNotPositived() {
+    private void getAllNotPositived() throws ParseException {
     int position = this.getRouteSpinnerPosition();
     Route route = (Route) routesAdapter.getItem(position);
     LiveData<List<Client>> clientListLiveData =
@@ -236,7 +245,7 @@ public class HomeFragment extends Fragment
   private void getAllClientsChecked() {
     if (this.getRouteSpinnerPosition() != 0) {
       int position = this.getRouteSpinnerPosition();
-      Route route = (Route) routesAdapter.getItem(position);
+        Route route = (Route) routeSpinner.getItemAtPosition(position);
       loadAllClientByRoute(route);
     } else {
       try {
@@ -249,7 +258,7 @@ public class HomeFragment extends Fragment
     }
   }
 
-  private void getAllPositived() {
+    private void getAllPositived() throws ParseException {
     int position = this.getRouteSpinnerPosition();
     Route route = (Route) routesAdapter.getItem(position);
     LiveData<List<Client>> clientListLiveData =
@@ -295,6 +304,7 @@ public class HomeFragment extends Fragment
   private void setDateSaleToday() {
     edtDateSale.setText(
         DateUtils.convertDateToStringInFormat_dd_mm_yyyy(new Date(System.currentTimeMillis())));
+      this.mViewModel.setDateSale(edtDateSale.getText().toString());
   }
 
   @Override
@@ -347,6 +357,8 @@ public class HomeFragment extends Fragment
     }
     if (requestCode == TARGET_FRAGMENT_REQUEST_CODE) {
       this.edtDateSale.setText(data.getStringExtra(EXTRA_DATE_SALE));
+        this.mViewModel.setDateSale(edtDateSale.getText().toString());
+        loadClientsByGroupChecked();
     }
   }
 
@@ -402,15 +414,27 @@ public class HomeFragment extends Fragment
 
   @OnItemSelected(R.id.spn_route)
   void onRouteItemSelected(int position) {
-    setRouteSpinnerPosition(position);
-    if (rdAll.isChecked()) {
-      this.getAllClientsChecked();
-    } else if (rdPositives.isChecked()) {
-      this.getAllPositived();
-    } else {
-      this.getAllNotPositived();
-    }
+      setRouteSpinnerPosition(position);
+      loadClientsByGroupChecked();
   }
+
+    private void loadClientsByGroupChecked() {
+        if (rdAll.isChecked()) {
+            this.getAllClientsChecked();
+        } else if (rdPositives.isChecked()) {
+            try {
+                this.getAllPositived();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                this.getAllNotPositived();
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
   private void loadAllClientByRoute(final Route route) {
     LiveData<List<Client>> listLiveData = this.mViewModel.getlAllClientByRoute(route);

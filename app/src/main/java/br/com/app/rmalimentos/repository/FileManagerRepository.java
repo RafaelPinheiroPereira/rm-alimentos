@@ -6,9 +6,11 @@ import br.com.app.rmalimentos.model.entity.Payment;
 import br.com.app.rmalimentos.model.entity.Price;
 import br.com.app.rmalimentos.model.entity.Product;
 import br.com.app.rmalimentos.model.entity.Route;
+import br.com.app.rmalimentos.model.entity.Sale;
 import br.com.app.rmalimentos.model.entity.Unity;
 import br.com.app.rmalimentos.utils.FileManager;
 import br.com.app.rmalimentos.utils.Singleton;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -22,6 +24,7 @@ public class FileManagerRepository {
   RouteFileRepository routeFileRepository;
   EmployeeFileRepository employeeFileRepository;
 
+  SaleFileRepository saleFileRepository;
   Employee employee;
 
   FileManager fileManager;
@@ -53,6 +56,13 @@ public class FileManagerRepository {
     readFiles();
   }
 
+  public void uploadFile(Employee employee, List<Sale> sales)
+          throws IllegalAccessException, InstantiationException, FileNotFoundException {
+    saleFileRepository = Singleton.getInstance(SaleFileRepository.class);
+    saleFileRepository.writeFile(employee, sales);
+
+  }
+
   private void readFiles() throws IOException, InstantiationException, IllegalAccessException {
     productFileRepository.readFile();
     unityFileRepository.readFile();
@@ -61,6 +71,10 @@ public class FileManagerRepository {
     priceFileRepository.readFile();
     routeFileRepository.readFile();
     unityFileRepository.readFile();
+  }
+
+  private void writeFile() {
+
   }
 
   public boolean fileExists(final String inputFile) {

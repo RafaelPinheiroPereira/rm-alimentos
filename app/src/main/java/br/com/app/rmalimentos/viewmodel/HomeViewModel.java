@@ -13,17 +13,19 @@ import br.com.app.rmalimentos.model.entity.Product;
 import br.com.app.rmalimentos.model.entity.Route;
 import br.com.app.rmalimentos.model.entity.Unity;
 import br.com.app.rmalimentos.repository.ClientRepository;
+import br.com.app.rmalimentos.repository.EmployeeRepository;
 import br.com.app.rmalimentos.repository.FileManagerRepository;
 import br.com.app.rmalimentos.repository.PaymentRepository;
 import br.com.app.rmalimentos.repository.PriceRepository;
 import br.com.app.rmalimentos.repository.ProductRepository;
 import br.com.app.rmalimentos.repository.RouteRepository;
+import br.com.app.rmalimentos.repository.SaleRepository;
 import br.com.app.rmalimentos.repository.UnityRepository;
-
 import br.com.app.rmalimentos.tasks.ImportDataTask;
-
 import br.com.app.rmalimentos.utils.Singleton;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -37,6 +39,12 @@ public class HomeViewModel extends AndroidViewModel {
   private UnityRepository unityRepository;
   private PaymentRepository paymentRepository;
   private PriceRepository priceRepository;
+
+    private SaleRepository saleRepository;
+
+    private EmployeeRepository employeeRepository;
+
+    private String dateSale;
 
   FileManagerRepository fileManagerRepository;
   Context context;
@@ -53,16 +61,20 @@ public class HomeViewModel extends AndroidViewModel {
     paymentRepository= new PaymentRepository(application);
     priceRepository= new PriceRepository(application);
     fileManagerRepository = Singleton.getInstance(FileManagerRepository.class);
+      saleRepository = new SaleRepository(application);
+      employeeRepository = new EmployeeRepository(application);
 
   }
 
-  public LiveData<List<Client>> getNotPositived(final String dateSale, final Route route) {
-    return this.clientRepository.findNotPositived(dateSale,route.getId());
+    public LiveData<List<Client>> getNotPositived(final String dateSale, final Route route) throws ParseException {
+        return this.clientRepository
+                .findNotPositived(DateFormat.getDateInstance(DateFormat.SHORT).parse(dateSale), route.getId());
   }
 
   public LiveData<List<Client>> getPositivedClients(final String dateSale,
-            final Route route) {
-      return this.clientRepository.findPositivedClient(dateSale,route.getId());
+          final Route route) throws ParseException {
+      return this.clientRepository.findPositivedClient(
+              DateFormat.getDateInstance(DateFormat.SHORT).parse(dateSale), route.getId());
 
     }
 
@@ -73,6 +85,10 @@ public class HomeViewModel extends AndroidViewModel {
     public void importData() throws IllegalAccessException, IOException, InstantiationException {
     new ImportDataTask(this).execute();
   }
+
+    public void logout() {
+        this.employeeRepository.removeUserSession();
+    }
 
   public void saveData() {
     saveRoutes();
@@ -153,6 +169,14 @@ public class HomeViewModel extends AndroidViewModel {
 
     return progressDialog;
   }
+
+    public String getDateSale() {
+        return dateSale;
+    }
+
+    public void setDateSale(final String dateSale) {
+        this.dateSale = dateSale;
+    }
 
   public Context getContext() {
     return context;

@@ -1,17 +1,12 @@
 package br.com.app.rmalimentos.view;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ProgressBar;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.lifecycle.ViewModelProviders;
 import br.com.app.rmalimentos.R;
 import br.com.app.rmalimentos.utils.Singleton;
 import br.com.app.rmalimentos.view.fragment.EmptyFragment;
@@ -20,7 +15,6 @@ import br.com.app.rmalimentos.viewmodel.HomeViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 import com.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog;
 import com.shreyaspatil.MaterialDialog.BottomSheetMaterialDialog.Builder;
 import java.io.IOException;
@@ -133,6 +127,34 @@ public class HomeActivity extends AppCompatActivity {
 
                         mBottomSheetDialog.show();
                     }
+                    break;
+
+                case R.id.page_4:
+
+                    startActivity(new Intent(HomeActivity.this, ExportActivity.class));
+
+                    break;
+
+                case R.id.page_5:
+
+                    BottomSheetMaterialDialog mBottomSheetDialog =
+                            new Builder(HomeActivity.this)
+                                    .setTitle("Atenção")
+                                    .setMessage("Você deseja realmente sair da sessão?")
+                                    .setNegativeButton("NÃO", (dialogInterface, which)->{
+
+                                        dialogInterface.dismiss();
+                                    })
+                                    .setPositiveButton(
+                                            "OK",
+                                            (dialogInterface, which)->{
+                                                this.homeViewModel.logout();
+                                                dialogInterface.dismiss();
+                                                this.finish();
+                                            })
+                                    .build();
+
+                    mBottomSheetDialog.show();
                     break;
             }
             return true;

@@ -25,6 +25,9 @@ public class Employee implements Serializable {
         return id;
     }
 
+    @ColumnInfo(name = "atived")
+    private int atived = 0;
+
     public void setId(@NonNull final Long id) {
         this.id = id;
     }
@@ -44,5 +47,13 @@ public class Employee implements Serializable {
 
     public void setPassword(final String password) {
         this.password = password;
+    }
+
+    public int getAtived() {
+        return atived;
+    }
+
+    public void setAtived(final int atived) {
+        this.atived = atived;
     }
 }

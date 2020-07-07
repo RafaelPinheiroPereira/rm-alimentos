@@ -37,7 +37,7 @@ import br.com.app.rmalimentos.model.entity.Unity;
                 SaleItem.class,
                 Unity.class
         },
-        version = 2)
+        version = 1)
 @TypeConverters({Converters.class})
 public abstract class AppDataBase extends RoomDatabase {
 

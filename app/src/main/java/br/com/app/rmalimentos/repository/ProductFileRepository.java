@@ -20,6 +20,7 @@ public class ProductFileRepository implements IFileRepository {
 
   @Override
   public void readFile() throws IOException, InstantiationException, IllegalAccessException {
+
     File file = productFile.createFile(Constants.APP_DIRECTORY, Constants.INPUT_FILES[1]);
     productFile.readFile(file);
     this.setProducts(productFile.getProducts());

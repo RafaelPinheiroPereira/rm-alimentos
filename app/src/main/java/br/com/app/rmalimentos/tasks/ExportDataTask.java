@@ -28,7 +28,8 @@ public class ExportDataTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(final Void... voids) {
         try {
             this.exportViewModel.getFileManagerRepository()
-                    .uploadFile(this.exportViewModel.getEmployee(), this.exportViewModel.getSales());
+                    .uploadFile(this.exportViewModel.getEmployee(), this.exportViewModel.getSales(),
+                            this.exportViewModel.getContext());
             return true;
         } catch (IllegalAccessException e) {
             e.printStackTrace();

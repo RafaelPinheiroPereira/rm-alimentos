@@ -52,6 +52,8 @@ public class SaleFile extends FileManager {
 
             pen.flush();
             pen.close();
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }

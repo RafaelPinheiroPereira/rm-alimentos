@@ -33,7 +33,7 @@ public class FileManager implements IFileManager {
 
     long count =
         Arrays.asList(file.listFiles()).stream()
-            .filter(item -> item.getName().equals(inputFile))
+                .filter(item->item.getName().equalsIgnoreCase(inputFile))
             .count();
 
     return count > 0;

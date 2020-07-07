@@ -1,5 +1,7 @@
 package br.com.app.rmalimentos.repository;
 
+import android.content.Context;
+import android.media.MediaScannerConnection;
 import br.com.app.rmalimentos.model.entity.Employee;
 import br.com.app.rmalimentos.model.entity.Sale;
 import br.com.app.rmalimentos.utils.Constants;
@@ -19,9 +21,10 @@ public class SaleFileRepository {
     }
 
     public void writeFile(final Employee employee,
-            final List<Sale> sales) throws FileNotFoundException {
+            final List<Sale> sales, Context context) throws FileNotFoundException {
         File file = saleFile.createFile(Constants.APP_DIRECTORY, Constants.OUTPUT_FILE);
         saleFile.writeFile(sales, file, employee);
+        MediaScannerConnection.scanFile(context, new String[]{file.toString()}, null, null);
     }
 
 

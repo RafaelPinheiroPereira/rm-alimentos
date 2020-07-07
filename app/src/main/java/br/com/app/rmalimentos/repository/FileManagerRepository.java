@@ -1,5 +1,6 @@
 package br.com.app.rmalimentos.repository;
 
+import android.content.Context;
 import br.com.app.rmalimentos.model.entity.Client;
 import br.com.app.rmalimentos.model.entity.Employee;
 import br.com.app.rmalimentos.model.entity.Payment;
@@ -56,10 +57,10 @@ public class FileManagerRepository {
     readFiles();
   }
 
-  public void uploadFile(Employee employee, List<Sale> sales)
+  public void uploadFile(Employee employee, List<Sale> sales, Context context)
           throws IllegalAccessException, InstantiationException, FileNotFoundException {
     saleFileRepository = Singleton.getInstance(SaleFileRepository.class);
-    saleFileRepository.writeFile(employee, sales);
+    saleFileRepository.writeFile(employee, sales, context);
 
   }
 

@@ -9,5 +9,5 @@ O aplicativo conta com as seguintes funcionalidades :
 - Exportação dos Dados
 - Vendas (Inserção e Edição das Vendas) _Cancelamento de Vendas_ **pendente**
 
-![](../header.png)
+![](app/imagens/home.jpeg)
 

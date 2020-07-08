@@ -73,7 +73,7 @@ public class SaleFile extends FileManager {
                         + "\r\n")
                         .getBytes());
         pen.write(
-                (formatedEmployeeId + "VENDAITENS          " + "PROCOD = " + saleItem.getId() + "\r\n")
+                (formatedEmployeeId + "VENDAITENS          " + "PROCOD = " + saleItem.getProductId() + "\r\n")
                         .getBytes());
         pen.write(
                 (formatedEmployeeId + "VENDAITENS          " + "UNDCOD = " + saleItem.getUnityCode() + "\r\n")

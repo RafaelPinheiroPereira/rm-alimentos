@@ -28,7 +28,7 @@ public class PriceFile extends  FileManager {
     }
 
     @Override
-    public void readFile(final File file) throws IOException, IllegalAccessException, InstantiationException {
+    public void readFile(final File file) throws IOException {
         String line;
         FileInputStream in = new FileInputStream(file);
         BufferedReader br = new BufferedReader(new InputStreamReader(
@@ -38,8 +38,8 @@ public class PriceFile extends  FileManager {
             Price price= new Price();
             price.setProductId(Long.valueOf(line.substring(0, 4)));
             price.setUnityCode(line.substring(4, 7).trim());
-            price.setPaymentId(Long.valueOf(line.substring(7,9).trim()));
-            price.setValue(Double.valueOf(line.substring(10).replace(",", ".").replace("N", "0")));
+            price.setPaymentId(Long.valueOf(line.substring(7, 10).trim()));
+            price.setValue(Double.valueOf(line.substring(11).replace(",", ".")));
             prices.add(price);
         }
         this.setPrices(prices);

@@ -4,7 +4,6 @@ import android.os.AsyncTask;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
-import br.com.app.rmalimentos.model.entity.Product;
 import br.com.app.rmalimentos.model.entity.Unity;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public abstract class UnityDAO extends  GenericDAO<Unity> {
     @Query("select * from unity order by id")
     public abstract LiveData<List<Unity>> getAll();
     @Query("select * from unity  where product_id=:productId   order by standard desc")
-    public abstract LiveData<List<Unity>> findUnitiesByProduct(final Long productId) ;
+    public abstract List<Unity> findUnitiesByProduct(final Long productId);
 
     private class OperationsAsyncTask extends AsyncTask<Unity, Void, Void> {
 

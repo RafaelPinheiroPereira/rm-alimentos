@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.lifecycle.LifecycleOwner;
 import br.com.app.rmalimentos.R;
 import br.com.app.rmalimentos.model.entity.Product;
 import br.com.app.rmalimentos.model.entity.SaleItem;
@@ -28,6 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.OnItemSelected;
 import butterknife.Unbinder;
+import java.util.List;
 
 public class EditSaleItemDialog extends DialogFragment {
   private Unbinder unbinder;
@@ -90,20 +90,19 @@ public class EditSaleItemDialog extends DialogFragment {
 
   private void setAdapters() {
 
-    saleViewModel
-        .loadUnitiesByProduct(this.saleViewModel.getProductSelected())
-        .observe(
-            (LifecycleOwner) this.saleViewModel.getContext(),
-            unities -> {
+    List<Unity> unities = saleViewModel
+            .loadUnitiesByProduct(this.saleViewModel.getProductSelected());
+    this.saleViewModel.setUnities(unities);
+
               unitiesAdapter =
                   new ArrayAdapter(
                       this.saleViewModel.getContext(),
                       android.R.layout.simple_list_item_1,
-                      unities);
+                          this.saleViewModel.getUnities());
               spnUnity.setAdapter(unitiesAdapter);
               spnUnity.setSelection(
                   unitiesAdapter.getPosition(this.salemItemToUpdate.getUnityCode()));
-            });
+
   }
 
   @Override

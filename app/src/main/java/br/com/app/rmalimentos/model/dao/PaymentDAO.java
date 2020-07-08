@@ -1,7 +1,6 @@
 package br.com.app.rmalimentos.model.dao;
 
 import android.os.AsyncTask;
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 import br.com.app.rmalimentos.model.entity.Payment;
@@ -12,7 +11,7 @@ public abstract  class PaymentDAO  extends GenericDAO<Payment> {
 
 
     @Query("select * from payment order by id")
-    public abstract LiveData<List<Payment>> getAll();
+    public abstract List<Payment> getAll();
     private class OperationsAsyncTask extends AsyncTask<Payment, Void, Void> {
 
         PaymentDAO mAsyncTaskDao;

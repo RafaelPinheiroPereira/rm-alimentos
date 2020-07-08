@@ -20,7 +20,7 @@ public class PaymentRepository {
         paymentDAO = appDataBase.paymentDAO();
     }
 
-    public LiveData<List<Payment>> getAll() throws ExecutionException, InterruptedException {
+    public List<Payment> getAll() throws ExecutionException, InterruptedException {
 
         return paymentDAO.getAll();
     }

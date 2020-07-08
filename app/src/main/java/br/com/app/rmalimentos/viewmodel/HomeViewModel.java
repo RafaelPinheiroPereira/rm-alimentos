@@ -7,11 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import br.com.app.rmalimentos.model.entity.Client;
-import br.com.app.rmalimentos.model.entity.Payment;
-import br.com.app.rmalimentos.model.entity.Price;
-import br.com.app.rmalimentos.model.entity.Product;
 import br.com.app.rmalimentos.model.entity.Route;
-import br.com.app.rmalimentos.model.entity.Unity;
 import br.com.app.rmalimentos.repository.ClientRepository;
 import br.com.app.rmalimentos.repository.EmployeeRepository;
 import br.com.app.rmalimentos.repository.FileManagerRepository;
@@ -136,22 +132,6 @@ public class HomeViewModel extends AndroidViewModel {
   public LiveData<List<Client>> getClientsAll() throws ExecutionException, InterruptedException{
     return clientRepository.getAll();
   }
-
-    public LiveData<List<Payment>> getPaymentsAll() throws ExecutionException, InterruptedException{
-        return paymentRepository.getAll();
-    }
-
-    public LiveData<List<Product>> getProductAll() throws ExecutionException, InterruptedException{
-        return productRepository.getAll();
-    }
-    public LiveData<List<Unity>> getUnitiesAll() throws ExecutionException, InterruptedException{
-        return unityRepository.getAll();
-    }
-
-    public LiveData<List<Price>> getPricesAll() throws ExecutionException, InterruptedException{
-        return priceRepository.getAll();
-    }
-
 
   public boolean containsAllFiles() {
     return fileManagerRepository.containsAllFiles();

@@ -23,7 +23,7 @@ public class UnityRepository {
         unityDAO = appDataBase.unityDAO();
     }
 
-    public LiveData<List<Unity>> findUnitiesByProduct(final Product product) {
+    public List<Unity> findUnitiesByProduct(final Product product) {
 
         return this.unityDAO.findUnitiesByProduct(product.getId());
     }

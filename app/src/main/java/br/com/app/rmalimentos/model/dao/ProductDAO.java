@@ -1,7 +1,6 @@
 package br.com.app.rmalimentos.model.dao;
 
 import android.os.AsyncTask;
-import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 import br.com.app.rmalimentos.model.entity.Product;
@@ -13,7 +12,7 @@ public abstract class ProductDAO extends GenericDAO<Product> {
     public abstract Product findProductById(final long productId);
 
     @Query("select * from product order by id")
-    public abstract LiveData<List<Product>> getAll();
+    public abstract List<Product> getAll();
     private class OperationsAsyncTask extends AsyncTask<Product, Void, Void> {
 
         ProductDAO mAsyncTaskDao;

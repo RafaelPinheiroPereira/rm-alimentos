@@ -20,12 +20,13 @@ import br.com.app.rmalimentos.repository.SaleRepository;
 import br.com.app.rmalimentos.repository.UnityRepository;
 import java.math.BigDecimal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
-public class SaleViewModel extends AndroidViewModel   {
+public class SaleViewModel extends AndroidViewModel {
 
   /*Objetos da tela*/
   BigDecimal productQuantity;
@@ -35,14 +36,17 @@ public class SaleViewModel extends AndroidViewModel   {
   Payment paymentSelected;
   Client client;
 
-    Date dateSale;
+  Date dateSale;
   Sale sale;
   List<SaleItem> saleItems;
 
+  List<Payment> payments = new ArrayList<>();
+
+  List<Product> products = new ArrayList<>();
+
+  List<Unity> unities = new ArrayList<>();
+
   Context context;
-
-
-
 
   /*Repositorios de acesso ao dados */
   PaymentRepository paymentRepository;
@@ -59,20 +63,20 @@ public class SaleViewModel extends AndroidViewModel   {
     productRepository = new ProductRepository(application);
     unityRepository = new UnityRepository(application);
     priceRepository = new PriceRepository(application);
-    saleItemRepository= new SaleItemRepository(application);
+    saleItemRepository = new SaleItemRepository(application);
   }
 
   public void deleteSaleItem(final SaleItem saleItemToRemove) {
     this.saleItemRepository.deleteItem(saleItemToRemove);
   }
 
-    public Product findProductById(final long productId) {
+  public Product findProductById(final long productId) {
     return this.productRepository.findProductById(productId);
-    }
+  }
 
-    public LiveData<Sale> findSaleByDateAndClient() {
+  public LiveData<Sale> findSaleByDateAndClient() {
 
-    return saleRepository.findSaleByDateAndClient(this.getDateSale(),this.getClient().getId());
+    return saleRepository.findSaleByDateAndClient(this.getDateSale(), this.getClient().getId());
   }
 
   public LiveData<List<SaleItem>> getAllSaleItens() {
@@ -85,15 +89,13 @@ public class SaleViewModel extends AndroidViewModel   {
 
   public Long getLastId() {
     return this.saleRepository.findLastId();
-
   }
 
-  public LiveData<List<Payment>> loadAllPaymentsType()
-      throws ExecutionException, InterruptedException {
+  public List<Payment> loadAllPaymentsType() throws ExecutionException, InterruptedException {
     return this.paymentRepository.getAll();
   }
 
-  public LiveData<List<Product>> loadAllProducts() throws ExecutionException, InterruptedException {
+  public List<Product> loadAllProducts() throws ExecutionException, InterruptedException {
     return this.productRepository.getAll();
   }
 
@@ -105,7 +107,7 @@ public class SaleViewModel extends AndroidViewModel   {
     return this.priceRepository.findPriceByUnitAndProduct(getProductSelected(), getUnitySelected());
   }
 
-  public LiveData<List<Unity>> loadUnitiesByProduct(final Product product) {
+  public List<Unity> loadUnitiesByProduct(final Product product) {
     return this.unityRepository.findUnitiesByProduct(product);
   }
 
@@ -119,15 +121,12 @@ public class SaleViewModel extends AndroidViewModel   {
 
     this.getSale()
             .getSaleItemList()
-            .forEach(
-                    saleItem -> saleItem.setSaleId(this.getSale().getId()));
+            .forEach(saleItem->saleItem.setSaleId(this.getSale().getId()));
     this.saleItemRepository.insertItens(this.getSale().getSaleItemList());
     this.saleRepository.createSale(this.getSale());
-
   }
 
-
-    public LiveData<Sale> searchSaleByDateAndClient() {
+  public LiveData<Sale> searchSaleByDateAndClient() {
 
     return this.saleRepository.findSaleByDateAndClient(
             this.getDateSale(), this.getClient().getId());
@@ -137,17 +136,16 @@ public class SaleViewModel extends AndroidViewModel   {
     this.client = client;
   }
 
-    public Date getDateSale() {
+  public Date getDateSale() {
     return dateSale;
   }
 
-    public void setDateSale(final Date dateSale) {
+  public void setDateSale(final Date dateSale) {
     this.dateSale = dateSale;
   }
 
   public LiveData<Sale> findSaleByDate() throws ParseException {
-    return saleRepository.findSaleByDate(
-            this.getDateSale());
+    return saleRepository.findSaleByDate(this.getDateSale());
   }
 
   public BigDecimal getProductQuantity() {
@@ -162,7 +160,7 @@ public class SaleViewModel extends AndroidViewModel   {
     return getProductQuantity().multiply(new BigDecimal(getPriceProductSelected().getValue()));
   }
 
-  public  Double getAmount(){
+  public Double getAmount() {
     return new BigDecimal(getSaleItems().stream().mapToDouble(SaleItem::getTotalValue).sum())
             .setScale(2, BigDecimal.ROUND_HALF_DOWN)
             .doubleValue();
@@ -207,13 +205,16 @@ public class SaleViewModel extends AndroidViewModel   {
   public void updateSale() {
     this.getSale()
             .getSaleItemList()
-            .forEach(
-                    saleItem -> saleItem.setSaleId(this.getSale().getId()));
+            .forEach(saleItem->saleItem.setSaleId(this.getSale().getId()));
 
-    List<SaleItem> itensToInsert=this.getSale().getSaleItemList().stream().filter(saleItem -> saleItem.getId()==null).collect(
-            Collectors.toList());
-    List<SaleItem> itensToUpdate=this.getSale().getSaleItemList().stream().filter(saleItem -> saleItem.getId()!=null).collect(
-            Collectors.toList());
+    List<SaleItem> itensToInsert =
+            this.getSale().getSaleItemList().stream()
+                    .filter(saleItem->saleItem.getId() == null)
+                    .collect(Collectors.toList());
+    List<SaleItem> itensToUpdate =
+            this.getSale().getSaleItemList().stream()
+                    .filter(saleItem->saleItem.getId() != null)
+                    .collect(Collectors.toList());
     this.saleItemRepository.insertItens(itensToInsert);
     this.saleItemRepository.updateItens(itensToUpdate);
     this.saleRepository.updateSale(this.getSale());
@@ -227,13 +228,13 @@ public class SaleViewModel extends AndroidViewModel   {
     this.sale = sale;
   }
 
-    public Payment getPaymentSelected() {
-        return paymentSelected;
-    }
+  public Payment getPaymentSelected() {
+    return paymentSelected;
+  }
 
-    public void setPaymentSelected(final Payment paymentSelected) {
-        this.paymentSelected = paymentSelected;
-    }
+  public void setPaymentSelected(final Payment paymentSelected) {
+    this.paymentSelected = paymentSelected;
+  }
 
   public Context getContext() {
     return context;
@@ -247,5 +248,27 @@ public class SaleViewModel extends AndroidViewModel   {
     return saleItemRepository;
   }
 
+  public List<Payment> getPayments() {
+    return payments;
+  }
 
+  public void setPayments(final List<Payment> payments) {
+    this.payments = payments;
+  }
+
+  public List<Product> getProducts() {
+    return products;
+  }
+
+  public void setProducts(final List<Product> products) {
+    this.products = products;
+  }
+
+  public List<Unity> getUnities() {
+    return unities;
+  }
+
+  public void setUnities(final List<Unity> unities) {
+    this.unities = unities;
+  }
 }

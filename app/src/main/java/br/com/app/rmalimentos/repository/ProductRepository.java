@@ -24,7 +24,7 @@ public class ProductRepository {
         return this.productDAO.findProductById(productId);
     }
 
-    public LiveData<List<Product>> getAll() throws ExecutionException, InterruptedException {
+    public List<Product> getAll() throws ExecutionException, InterruptedException {
 
         return productDAO.getAll();
     }

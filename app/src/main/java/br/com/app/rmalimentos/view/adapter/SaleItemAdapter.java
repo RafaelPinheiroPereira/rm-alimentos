@@ -8,18 +8,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import br.com.app.rmalimentos.R;
+import br.com.app.rmalimentos.model.entity.SaleItem;
 import br.com.app.rmalimentos.utils.MonetaryFormatting;
-import br.com.app.rmalimentos.viewmodel.SaleViewModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import java.util.List;
 
 public class SaleItemAdapter extends RecyclerView.Adapter<SaleItemAdapter.MyViewHolder> {
 
   private LayoutInflater mLayoutInflater;
-  private SaleViewModel saleViewModel;
 
-  public SaleItemAdapter(Context ctx, SaleViewModel saleViewModel) {
-    this.saleViewModel = saleViewModel;
+  private List<SaleItem> saleItems;
+
+  public SaleItemAdapter(Context ctx, List<SaleItem> saleItems) {
+    this.saleItems = saleItems;
     this.mLayoutInflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
   }
 
@@ -28,21 +30,21 @@ public class SaleItemAdapter extends RecyclerView.Adapter<SaleItemAdapter.MyView
       @NonNull final SaleItemAdapter.MyViewHolder holder, final int position) {
 
       holder.txtProductDescription
-              .setText(String.format("%05d ", this.saleViewModel.getSaleItems().get(position).getProductId()) +
-        this.saleViewModel.getSaleItems().get(position).getDescription());
+              .setText(String.format("%05d ", this.saleItems.get(position).getProductId()) +
+                      this.saleItems.get(position).getDescription());
     holder.txtUnity.setText(
-        this.saleViewModel.getSaleItems().get(position).getQuantity()
+            this.saleItems.get(position).getQuantity()
             + " x "
-            + this.saleViewModel.getSaleItems().get(position).getUnityCode());
+                    + this.saleItems.get(position).getUnityCode());
     holder.txtProductValue.setText(
-        this.saleViewModel.getSaleItems().get(position).getQuantity()
+            this.saleItems.get(position).getQuantity()
             + " x "
             + MonetaryFormatting.convertToReal(
-                this.saleViewModel.getSaleItems().get(position).getValue()));
+                    this.saleItems.get(position).getValue()));
     holder.txtTotalValue.setText(
         "TOTAL: "
             + MonetaryFormatting.convertToReal(
-                this.saleViewModel.getSaleItems().get(position).getTotalValue()));
+                this.saleItems.get(position).getTotalValue()));
 
     holder.txtPosition.setText((position+1) + "/" + (this.getItemCount() ));
   }
@@ -54,7 +56,7 @@ public class SaleItemAdapter extends RecyclerView.Adapter<SaleItemAdapter.MyView
    */
   @Override
   public int getItemCount() {
-    return this.saleViewModel.getSaleItems().size();
+    return this.saleItems.size();
   }
 
   public class MyViewHolder extends RecyclerView.ViewHolder {

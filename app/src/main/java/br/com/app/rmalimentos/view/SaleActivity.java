@@ -54,7 +54,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 public class SaleActivity extends AppCompatActivity {
 
@@ -108,9 +107,11 @@ public class SaleActivity extends AppCompatActivity {
 
   SaleViewModel saleViewModel;
 
-  ArrayAdapter paymentsAdapter;
-  ArrayAdapter productsAdapter;
-  ArrayAdapter unitiesAdapter;
+  ArrayAdapter<Payment> paymentsAdapter;
+
+  ArrayAdapter<Product> productsAdapter;
+
+  ArrayAdapter<Unity> unitiesAdapter;
   SaleItemAdapter saleItemAdapter;
 
   AbstractActivity abstractActivity;
@@ -132,37 +133,19 @@ public class SaleActivity extends AppCompatActivity {
     try {
       abstractActivity = Singleton.getInstance(AbstractActivity.class);
       this.saleViewModel.setContext(this);
-
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    }
-    try {
       this.getParentActivityData();
-    } catch (ParseException e) {
+
+    } catch (InstantiationException | IllegalAccessException | ParseException e) {
       e.printStackTrace();
     }
+
     this.setClientData();
-    try {
-      this.setAdapters();
-      this.initSwipe();
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+    this.setAdapters();
+    this.initSwipe();
+    this.checkInitialConfigure();
 
-    try {
-      this.checkInitialConfigure();
-
-    } catch (ParseException e) {
-      abstractActivity.showErrorMessage(this, e.getMessage());
-    }
     this.actProductId.setOnItemClickListener(
-        (parent, view, position, id) -> {
-          loadUnitiesByProduct(position);
-        });
+            (parent, view, position, id)->loadUnitiesByProduct(position));
 
     this.spnUnities.setOnItemSelectedListener(
         new OnItemSelectedListener() {
@@ -171,14 +154,8 @@ public class SaleActivity extends AppCompatActivity {
               final AdapterView<?> parent, final View view, final int position, final long id) {
 
             saleViewModel.setUnitySelected((Unity) parent.getAdapter().getItem(position));
-            saleViewModel
-                .loadPriceByUnitAndProduct()
-                .observe(
-                    SaleActivity.this,
-                    price -> {
-                      saleViewModel.setPriceProductSelected(price);
-                      configurePriceByUnityAndProduct();
-                    });
+            saleViewModel.setPriceProductSelected(saleViewModel.getPriceByUnitAndProduct());
+            configurePriceByUnityAndProduct();
           }
 
           @Override
@@ -357,15 +334,14 @@ public class SaleActivity extends AppCompatActivity {
   private void loadUnitiesByProduct(final int position) {
     spnUnities.setEnabled(true);
     cetPrice.setEnabled(true);
-    this.saleViewModel.setProductSelected((Product) productsAdapter.getItem(position));
+
+    this.saleViewModel.setProductSelected(productsAdapter.getItem(position));
     List<Unity> unities =
             saleViewModel.loadUnitiesByProduct(this.saleViewModel.getProductSelected());
     this.saleViewModel.setUnities(unities);
-    unitiesAdapter =
-            new ArrayAdapter(
-                    getApplicationContext(),
-                    android.R.layout.simple_list_item_1,
-                    this.saleViewModel.getUnities());
+
+    unitiesAdapter.addAll(this.saleViewModel.getUnities());
+
     spnUnities.setAdapter(unitiesAdapter);
   }
 
@@ -376,7 +352,7 @@ public class SaleActivity extends AppCompatActivity {
 
   /*Configura os componentes para a atualizacao da venda*/
   private void configureUpdate() {
-    Sale sale = this.saleViewModel.findSaleByDateAndClient();
+    Sale sale = this.saleViewModel.getSaleByDateAndClient();
     this.saleViewModel.setSale(sale);
 
     List<SaleItem> saleItems = this.saleViewModel.getAllSaleItens();
@@ -391,29 +367,12 @@ public class SaleActivity extends AppCompatActivity {
             new Payment(
                     this.saleViewModel.getSale().getPaymentDescription(),
                     this.saleViewModel.getSale().getPaymentId());
-    try {
-      List<Payment> payments = this.saleViewModel.loadAllPaymentsType();
-      this.saleViewModel.setPayments(payments);
 
-      paymentsAdapter =
-              new ArrayAdapter(
-                      getApplicationContext(),
-                      android.R.layout.simple_list_item_1,
-                      this.saleViewModel.getPayments());
-
-      spnPayment.setAdapter(paymentsAdapter);
-      spnPayment.setSelection(this.saleViewModel.getPayments().indexOf(payment));
-
-    } catch (ExecutionException e) {
-      e.printStackTrace();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+    spnPayment.setSelection(this.saleViewModel.getPayments().indexOf(payment));
   }
 
-  private void checkInitialConfigure() throws ParseException {
-    Sale sale = this.saleViewModel.searchSaleByDateAndClient();
-    Optional<Sale> optionalSale = Optional.ofNullable(sale);
+  private void checkInitialConfigure() {
+    Optional<Sale> optionalSale = Optional.ofNullable(this.saleViewModel.getSaleByDateAndClient());
     if (optionalSale.isPresent()) {
       this.configureUpdate();
     } else {
@@ -421,22 +380,24 @@ public class SaleActivity extends AppCompatActivity {
     }
   }
 
-  private void setAdapters() throws ExecutionException, InterruptedException {
-    List<Payment> payments = this.saleViewModel.loadAllPaymentsType();
-    paymentsAdapter =
-            new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1, payments);
-    spnPayment.setAdapter(paymentsAdapter);
-    this.saleViewModel.setPayments(payments);
+  private void setAdapters() {
 
-    List<Product> products = this.saleViewModel.loadAllProducts();
-    this.saleViewModel.setProducts(products);
+    paymentsAdapter =
+            new ArrayAdapter<Payment>(getApplicationContext(), android.R.layout.simple_list_item_1);
+
+    unitiesAdapter =
+            new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1);
 
     productsAdapter =
-            new ArrayAdapter(
-                    getApplicationContext(),
-                    android.R.layout.simple_list_item_1,
-                    this.saleViewModel.getProducts());
+            new ArrayAdapter<Product>(getApplicationContext(), android.R.layout.simple_list_item_1);
 
+    this.saleViewModel.setPayments(this.saleViewModel.getAllPaymentsType());
+    this.saleViewModel.setProducts(this.saleViewModel.getAllProducts());
+
+    paymentsAdapter.addAll(this.saleViewModel.getPayments());
+    productsAdapter.addAll(this.saleViewModel.getAllProducts());
+
+    spnPayment.setAdapter(paymentsAdapter);
     actProductId.setThreshold(1); // will start working from first character
     actProductId.setAdapter(productsAdapter);
 
@@ -523,11 +484,9 @@ public class SaleActivity extends AppCompatActivity {
   public void insertItem(View view) {
 
     if (this.isValidItem()) {
-      SaleItem saleItem = this.getItemToInsert();
+      SaleItem saleItem = this.saleViewModel.getItemToInsert();
       if (this.saleViewModel.getSaleItems().stream()
-              .filter(item -> item.getProductId() == saleItem.getProductId())
-              .count()
-          == 0) {
+              .noneMatch(item->item.getProductId() == saleItem.getProductId())) {
         this.saleViewModel.insertItem(saleItem);
         this.updateRecicleView();
         this.updateTxtAmountSaleView();
@@ -558,17 +517,15 @@ public class SaleActivity extends AppCompatActivity {
               .setNegativeButton(
                   "Não",
                   R.mipmap.ic_clear_black_48dp,
-                  (dialogInterface, which) -> {
-                    dialogInterface.dismiss();
-                  })
+                      (dialogInterface, which)->dialogInterface.dismiss())
               .setPositiveButton(
                   "Salvar",
                   R.mipmap.ic_save_white_48dp,
                   (dialogInterface, which) -> {
-                    if (!this.isUpdate()) {
+                    if (!this.saleViewModel.isUpdate()) {
 
                       try {
-                        this.saleViewModel.setSale(this.getSaleToInsert());
+                        this.saleViewModel.setSale(this.saleViewModel.getSaleToInsert());
                       } catch (ParseException e) {
                         e.printStackTrace();
                       }
@@ -576,7 +533,7 @@ public class SaleActivity extends AppCompatActivity {
                       new InsertSaleItensTask(this.saleViewModel, this).execute();
 
                     } else {
-                      this.configSaleToUpdate();
+                      this.saleViewModel.configSaleToUpdate();
                       new UpdateSaleItensTask(this.saleViewModel, this).execute();
                     }
 
@@ -590,52 +547,10 @@ public class SaleActivity extends AppCompatActivity {
       abstractActivity.showMessage(this, "Itens não adicionados!");
     }
   }
-  /*Prepara os dados da venda para a insercao*/
-  private Sale getSaleToInsert() throws ParseException {
-
-    Sale sale = new Sale();
-    sale.setClientId(this.saleViewModel.getClient().getId());
-    sale.setPaymentId(this.saleViewModel.getPaymentSelected().getId());
-    sale.setPaymentDescription(this.saleViewModel.getPaymentSelected().getDescription());
-    sale.setSaleItemList(this.saleViewModel.getSaleItems());
-    sale.setAmount(this.saleViewModel.getAmount());
-    sale.setDateSale(this.saleViewModel.getDateSale());
-
-    return sale;
-  }
-
-  /*Prepara os dados da venda para a alteracao*/
-  private void configSaleToUpdate() {
-
-    this.saleViewModel.getSale().setPaymentId(this.saleViewModel.getPaymentSelected().getId());
-    this.saleViewModel
-        .getSale()
-        .setPaymentDescription(this.saleViewModel.getPaymentSelected().getDescription());
-    this.saleViewModel.getSale().setSaleItemList(this.saleViewModel.getSaleItems());
-    this.saleViewModel.getSale().setAmount(this.saleViewModel.getAmount());
-  }
-
-  /*Verifica se eh uma edicao a venda*/
-  private boolean isUpdate() {
-    return Optional.ofNullable(this.saleViewModel.getSale()).isPresent();
-  }
 
   /*Atualiza o recycle view*/
   private void updateRecicleView() {
     saleItemAdapter.notifyDataSetChanged();
-  }
-
-  /*Prepara a inserçao do item */
-  private SaleItem getItemToInsert() {
-    SaleItem saleItem = new SaleItem();
-    saleItem.setProductId(this.saleViewModel.getProductSelected().getId());
-    saleItem.setUnityCode(this.saleViewModel.getUnitySelected().getCode());
-    saleItem.setDescription(this.saleViewModel.getProductSelected().getDescription());
-    saleItem.setValue(this.saleViewModel.getPriceProductSelected().getValue());
-    saleItem.setTotalValue(this.saleViewModel.totalValueProduct().doubleValue());
-    saleItem.setQuantity(this.saleViewModel.getProductQuantity().intValue());
-
-    return saleItem;
   }
 
   /** Realiza a validacao dos itens antes da insercao */
@@ -645,7 +560,7 @@ public class SaleActivity extends AppCompatActivity {
       edtQtd.requestFocus();
       return false;
     }
-    if (Double.valueOf(edtQtd.getText().toString()) <= 0) {
+    if (Double.parseDouble(edtQtd.getText().toString()) <= 0) {
       edtQtd.setError("Quantidade mínima de 1 item!");
       edtQtd.requestFocus();
       return false;

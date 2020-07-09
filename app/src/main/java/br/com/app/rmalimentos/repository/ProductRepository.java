@@ -6,7 +6,6 @@ import br.com.app.rmalimentos.AppDataBase;
 import br.com.app.rmalimentos.model.dao.ProductDAO;
 import br.com.app.rmalimentos.model.entity.Product;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class ProductRepository {
     private ProductDAO productDAO;
@@ -24,7 +23,7 @@ public class ProductRepository {
         return this.productDAO.findProductById(productId);
     }
 
-    public List<Product> getAll() throws ExecutionException, InterruptedException {
+    public List<Product> getAll() {
 
         return productDAO.getAll();
     }

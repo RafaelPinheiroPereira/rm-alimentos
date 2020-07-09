@@ -6,7 +6,6 @@ import br.com.app.rmalimentos.AppDataBase;
 import br.com.app.rmalimentos.model.dao.PaymentDAO;
 import br.com.app.rmalimentos.model.entity.Payment;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class PaymentRepository {
     private PaymentDAO paymentDAO;
@@ -20,7 +19,7 @@ public class PaymentRepository {
         paymentDAO = appDataBase.paymentDAO();
     }
 
-    public List<Payment> getAll() throws ExecutionException, InterruptedException {
+    public List<Payment> getAll() {
 
         return paymentDAO.getAll();
     }

@@ -23,6 +23,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
@@ -74,7 +75,7 @@ public class SaleViewModel extends AndroidViewModel {
     return this.productRepository.findProductById(productId);
   }
 
-  public Sale findSaleByDateAndClient() {
+    public Sale getSaleByDateAndClient() {
 
     return saleRepository.findSaleByDateAndClient(this.getDateSale(), this.getClient().getId());
   }
@@ -91,11 +92,11 @@ public class SaleViewModel extends AndroidViewModel {
     return this.saleRepository.findLastId();
   }
 
-  public List<Payment> loadAllPaymentsType() throws ExecutionException, InterruptedException {
+    public List<Payment> getAllPaymentsType() {
     return this.paymentRepository.getAll();
   }
 
-  public List<Product> loadAllProducts() throws ExecutionException, InterruptedException {
+    public List<Product> getAllProducts() {
     return this.productRepository.getAll();
   }
 
@@ -103,7 +104,7 @@ public class SaleViewModel extends AndroidViewModel {
     return this.unityRepository.getAll();
   }
 
-  public LiveData<Price> loadPriceByUnitAndProduct() {
+    public Price getPriceByUnitAndProduct() {
     return this.priceRepository.findPriceByUnitAndProduct(getProductSelected(), getUnitySelected());
   }
 
@@ -271,4 +272,47 @@ public class SaleViewModel extends AndroidViewModel {
   public void setUnities(final List<Unity> unities) {
     this.unities = unities;
   }
+
+    /*Obtem o item preparado para a insercao*/
+    public SaleItem getItemToInsert() {
+        SaleItem saleItem = new SaleItem();
+        saleItem.setProductId(this.getProductSelected().getId());
+        saleItem.setUnityCode(this.getUnitySelected().getCode());
+        saleItem.setDescription(this.getProductSelected().getDescription());
+        saleItem.setValue(this.getPriceProductSelected().getValue());
+        saleItem.setTotalValue(this.totalValueProduct().doubleValue());
+        saleItem.setQuantity(this.getProductQuantity().intValue());
+
+        return saleItem;
+    }
+
+    /*Prepara os dados da venda para a insercao*/
+    public Sale getSaleToInsert() throws ParseException {
+
+        Sale sale = new Sale();
+        sale.setClientId(this.getClient().getId());
+        sale.setPaymentId(this.getPaymentSelected().getId());
+        sale.setPaymentDescription(this.getPaymentSelected().getDescription());
+        sale.setSaleItemList(this.getSaleItems());
+        sale.setAmount(this.getAmount());
+        sale.setDateSale(this.getDateSale());
+
+        return sale;
+    }
+
+    public boolean isUpdate() {
+        return Optional.ofNullable(this.getSale()).isPresent();
+    }
+
+    /*Prepara os dados da venda para a alteracao*/
+    public void configSaleToUpdate() {
+
+        this.getSale().setPaymentId(this.getPaymentSelected().getId());
+        this
+                .getSale()
+                .setPaymentDescription(this.getPaymentSelected().getDescription());
+        this.getSale().setSaleItemList(this.getSaleItems());
+        this.getSale().setAmount(this.getAmount());
+    }
+
 }

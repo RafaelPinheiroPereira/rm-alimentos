@@ -22,7 +22,7 @@ public class PriceRepository {
         priceDAO = appDataBase.priceDAO();
     }
 
-    public LiveData<Price> findPriceByUnitAndProduct(final Product productSelected, final Unity unity) {
+    public Price findPriceByUnitAndProduct(final Product productSelected, final Unity unity) {
         return  this.priceDAO.findPriceByUnitAndProduct(productSelected.getId(),unity.getCode());
     }
 

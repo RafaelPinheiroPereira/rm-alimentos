@@ -1,6 +1,7 @@
 package br.com.app.rmalimentos.viewmodel;
 
 import android.app.Application;
+import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import br.com.app.rmalimentos.model.entity.Employee;
@@ -20,6 +21,9 @@ public class LoginViewModel extends AndroidViewModel {
 
 
     FileManagerRepository fileManagerRepository;
+
+    Context context;
+
 
 
     public LoginViewModel(@NonNull final Application application)
@@ -48,7 +52,7 @@ public class LoginViewModel extends AndroidViewModel {
 
     public void createAppDirectory() throws IOException {
 
-        fileManagerRepository.createAppDirectory();
+        fileManagerRepository.createAppDirectory(this.getContext());
     }
 
     public Employee getEmployee() {
@@ -65,5 +69,13 @@ public class LoginViewModel extends AndroidViewModel {
 
     private void setEmployee(final Employee employee) {
         this.employee = employee;
+    }
+
+    public Context getContext() {
+        return context;
+    }
+
+    public void setContext(final Context context) {
+        this.context = context;
     }
 }

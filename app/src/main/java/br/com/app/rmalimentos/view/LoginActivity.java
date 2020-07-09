@@ -201,6 +201,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 Toast.makeText(this, "Permissões concedidas.", Toast.LENGTH_LONG).show();
                 try {
+                    loginViewModel.setContext(this);
                     loginViewModel.createAppDirectory();
                 } catch (IOException e) {
 

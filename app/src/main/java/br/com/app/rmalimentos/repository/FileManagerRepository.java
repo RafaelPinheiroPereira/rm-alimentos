@@ -40,8 +40,8 @@ public class FileManagerRepository {
     return fileManager.containsAllFiles();
   }
 
-  public void createAppDirectory() {
-    fileManager.createAppDirectory();
+  public void createAppDirectory(final Context context) throws FileNotFoundException {
+    this.fileManager.createAppDirectory(context);
   }
 
   public void downloadFiles() throws IOException, IllegalAccessException, InstantiationException {
@@ -74,9 +74,7 @@ public class FileManagerRepository {
     unityFileRepository.readFile();
   }
 
-  private void writeFile() {
 
-  }
 
   public boolean fileExists(final String inputFile) {
     return fileManager.fileExists(inputFile);

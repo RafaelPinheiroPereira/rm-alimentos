@@ -1,22 +1,24 @@
 package br.com.app.rmalimentos.utils;
 
+import android.content.Context;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public interface IFileManager {
 
-  public File createAppDirectory();
+    File createAppDirectory(Context context) throws FileNotFoundException;
 
-  public boolean fileExists(final String inputFile);
+    boolean fileExists(final String inputFile);
 
-  public File createFile(String nameDirectory, String nameFile);
+    File createFile(String nameDirectory, String nameFile);
 
-  public abstract void readFile(File file)
+    void readFile(File file)
       throws IOException, IllegalAccessException, InstantiationException;
 
-  public boolean containsAllFiles();
+    boolean containsAllFiles();
 
-  public StringBuilder searchInexistsFilesNames();
+    StringBuilder searchInexistsFilesNames();
 
-  public File createOutputFile() throws IOException;
+    File createOutputFile() throws IOException;
 }

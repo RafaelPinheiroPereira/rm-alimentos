@@ -1,7 +1,11 @@
 package br.com.app.rmalimentos.utils;
 
+import android.content.Context;
+import android.media.MediaScannerConnection;
 import android.os.Environment;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Stream;
@@ -12,10 +16,20 @@ public class FileManager implements IFileManager {
   }
 
   @Override
-  public File createAppDirectory() {
+  public File createAppDirectory(Context context) throws FileNotFoundException {
     File directory = Environment.getExternalStoragePublicDirectory(Constants.APP_FOLDER_NAME);
     if (!directory.exists()) {
-      directory.mkdir();
+      directory.mkdirs();
+      File file = new File(Constants.APP_DIRECTORY, Constants.LOG_FILE);
+      FileOutputStream pen = new FileOutputStream(file);
+      try {
+        pen.write("R&M-Alimentos LTDA".getBytes());
+        pen.flush();
+        pen.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      MediaScannerConnection.scanFile(context, new String[]{file.toString()}, null, null);
     }
     return directory;
   }

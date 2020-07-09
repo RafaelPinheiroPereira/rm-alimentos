@@ -35,4 +35,6 @@ public class Constants {
             };
 
     public static String OUTPUT_FILE = "/Pedidos.txt";
+
+    public static String LOG_FILE = "/Log.txt";
 }

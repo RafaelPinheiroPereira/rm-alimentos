@@ -18,10 +18,6 @@ public class EmployeeFileRepository  implements  IFileRepository{
         employeeFile=Singleton.getInstance(EmployeeFile.class);
     }
 
-    public void createAppDirectory() {
-        employeeFile.createAppDirectory();
-    }
-
     public boolean fileExists(final String inputFile) {
         return employeeFile.fileExists(inputFile);
     }

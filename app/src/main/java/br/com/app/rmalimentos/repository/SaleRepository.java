@@ -34,7 +34,7 @@ public class SaleRepository  {
         return this.saleDAO.findSaleByDate(dateSale);
     }
 
-    public LiveData<Sale> findSaleByDateAndClient(final Date dateSale, final Long clientId) {
+    public Sale findSaleByDateAndClient(final Date dateSale, final Long clientId) {
         return this.saleDAO.findSaleByDateAndClient(dateSale,clientId);
     }
 

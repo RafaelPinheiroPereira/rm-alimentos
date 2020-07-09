@@ -1,7 +1,6 @@
 package br.com.app.rmalimentos.repository;
 
 import android.app.Application;
-import androidx.lifecycle.LiveData;
 import br.com.app.rmalimentos.AppDataBase;
 import br.com.app.rmalimentos.model.dao.SaleItemDAO;
 import br.com.app.rmalimentos.model.entity.SaleItem;
@@ -20,7 +19,7 @@ public class SaleItemRepository {
     this.saleItemDAO.delete(saleItemToRemove);
   }
 
-  public LiveData<List<SaleItem>> findSaleItemBySale(final Long saleId) {
+  public List<SaleItem> findSaleItemBySale(final Long saleId) {
     return this.saleItemDAO.findItensBySale(saleId);
   }
 

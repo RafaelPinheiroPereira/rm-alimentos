@@ -22,7 +22,7 @@ public abstract class SaleDAO extends  GenericDAO<Sale>    {
     public abstract Long findLastId();
 
     @Query(value = "SELECT * FROM sale WHERE date_sale= :dateSale and client_id = :clientId ")
-    public abstract LiveData<Sale> findSaleByDateAndClient(Date dateSale, Long clientId);
+    public abstract Sale findSaleByDateAndClient(Date dateSale, Long clientId);
 
     private class OperationsAsyncTask extends AsyncTask<Sale, Void, Void> {
 

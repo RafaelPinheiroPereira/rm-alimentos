@@ -74,12 +74,12 @@ public class SaleViewModel extends AndroidViewModel {
     return this.productRepository.findProductById(productId);
   }
 
-  public LiveData<Sale> findSaleByDateAndClient() {
+  public Sale findSaleByDateAndClient() {
 
     return saleRepository.findSaleByDateAndClient(this.getDateSale(), this.getClient().getId());
   }
 
-  public LiveData<List<SaleItem>> getAllSaleItens() {
+  public List<SaleItem> getAllSaleItens() {
     return this.saleItemRepository.findSaleItemBySale(getSale().getId());
   }
 
@@ -126,7 +126,7 @@ public class SaleViewModel extends AndroidViewModel {
     this.saleRepository.createSale(this.getSale());
   }
 
-  public LiveData<Sale> searchSaleByDateAndClient() {
+  public Sale searchSaleByDateAndClient() {
 
     return this.saleRepository.findSaleByDateAndClient(
             this.getDateSale(), this.getClient().getId());

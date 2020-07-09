@@ -315,12 +315,11 @@ public class SaleActivity extends AppCompatActivity {
                 saleViewModel.getSaleItems().remove(position);
               }
               updateTxtAmountSaleView();
-                saleItemAdapter.notifyItemRemoved(position);
+              saleItemAdapter.notifyItemRemoved(position);
             } else {
 
               this.showEditSaleItem(saleViewModel, position);
             }
-
           }
 
           private void showEditSaleItem(final SaleViewModel saleViewModel, final int position) {
@@ -377,61 +376,49 @@ public class SaleActivity extends AppCompatActivity {
 
   /*Configura os componentes para a atualizacao da venda*/
   private void configureUpdate() {
-    this.saleViewModel
-        .findSaleByDateAndClient()
-        .observe(
-            this,
-            sale -> {
-              this.saleViewModel.setSale(sale);
-              this.saleViewModel
-                  .getAllSaleItens()
-                  .observe(
-                      this,
-                      saleItems -> {
-                        this.saleViewModel.setSaleItems(saleItems);
-                        saleItemAdapter = new SaleItemAdapter(this, this.saleViewModel.getSaleItems());
-                        rcvSaleItem.setAdapter(saleItemAdapter);
-                        updateTxtAmountSaleView();
-                        Payment payment =
-                                new Payment(
-                                        this.saleViewModel.getSale().getPaymentDescription(),
-                                        this.saleViewModel.getSale().getPaymentId());
-                        try {
-                          List<Payment> payments = this.saleViewModel.loadAllPaymentsType();
-                          this.saleViewModel.setPayments(payments);
+    Sale sale = this.saleViewModel.findSaleByDateAndClient();
+    this.saleViewModel.setSale(sale);
 
-                          paymentsAdapter =
-                                  new ArrayAdapter(
-                                          getApplicationContext(),
-                                          android.R.layout.simple_list_item_1,
-                                          this.saleViewModel.getPayments());
+    List<SaleItem> saleItems = this.saleViewModel.getAllSaleItens();
+    this.saleViewModel.setSaleItems(saleItems);
 
-                          spnPayment.setAdapter(paymentsAdapter);
-                          spnPayment.setSelection(
-                                  this.saleViewModel.getPayments().indexOf(payment));
+    saleItemAdapter = new SaleItemAdapter(this, this.saleViewModel.getSaleItems());
+    rcvSaleItem.setAdapter(saleItemAdapter);
 
-                        } catch (ExecutionException e) {
-                          e.printStackTrace();
-                        } catch (InterruptedException e) {
-                          e.printStackTrace();
-                        }
-                      });
-            });
+    updateTxtAmountSaleView();
+
+    Payment payment =
+            new Payment(
+                    this.saleViewModel.getSale().getPaymentDescription(),
+                    this.saleViewModel.getSale().getPaymentId());
+    try {
+      List<Payment> payments = this.saleViewModel.loadAllPaymentsType();
+      this.saleViewModel.setPayments(payments);
+
+      paymentsAdapter =
+              new ArrayAdapter(
+                      getApplicationContext(),
+                      android.R.layout.simple_list_item_1,
+                      this.saleViewModel.getPayments());
+
+      spnPayment.setAdapter(paymentsAdapter);
+      spnPayment.setSelection(this.saleViewModel.getPayments().indexOf(payment));
+
+    } catch (ExecutionException e) {
+      e.printStackTrace();
+    } catch (InterruptedException e) {
+      e.printStackTrace();
+    }
   }
 
   private void checkInitialConfigure() throws ParseException {
-    this.saleViewModel
-        .searchSaleByDateAndClient()
-        .observe(
-            this,
-            sale -> {
-              Optional<Sale> optionalSale = Optional.ofNullable(sale);
-              if (optionalSale.isPresent()) {
-                this.configureUpdate();
-              } else {
-                this.configureCreate();
-              }
-            });
+    Sale sale = this.saleViewModel.searchSaleByDateAndClient();
+    Optional<Sale> optionalSale = Optional.ofNullable(sale);
+    if (optionalSale.isPresent()) {
+      this.configureUpdate();
+    } else {
+      this.configureCreate();
+    }
   }
 
   private void setAdapters() throws ExecutionException, InterruptedException {

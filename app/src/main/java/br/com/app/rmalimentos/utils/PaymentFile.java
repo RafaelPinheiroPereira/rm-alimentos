@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,8 +25,8 @@ public class PaymentFile extends  FileManager {
 
         while ((line = br.readLine()) != null && !line.equals("")) {
             Payment payment= new Payment();
-            payment.setId(Long.valueOf(line.toString().substring(0, 2)));
-            payment.setDescription(line.toString().substring(2, 42).trim());
+            payment.setId(Long.valueOf(line.substring(0, 3)));
+            payment.setDescription(line.substring(3, 42).trim());
             payments.add(payment);
 
         }

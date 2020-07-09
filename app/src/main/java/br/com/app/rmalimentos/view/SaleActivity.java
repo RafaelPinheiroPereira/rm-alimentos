@@ -310,19 +310,17 @@ public class SaleActivity extends AppCompatActivity {
 
               if (Optional.ofNullable(saleItemToRemove.getId()).isPresent()) {
                 saleViewModel.getSaleItems().remove(position);
-                updateRecicleView();
                 saleViewModel.deleteSaleItem(saleItemToRemove);
-
-
               } else {
                 saleViewModel.getSaleItems().remove(position);
               }
               updateTxtAmountSaleView();
+                saleItemAdapter.notifyItemRemoved(position);
             } else {
 
               this.showEditSaleItem(saleViewModel, position);
             }
-            updateRecicleView();
+
           }
 
           private void showEditSaleItem(final SaleViewModel saleViewModel, final int position) {

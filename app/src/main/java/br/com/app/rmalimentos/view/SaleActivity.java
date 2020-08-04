@@ -52,6 +52,8 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -394,9 +396,10 @@ public class SaleActivity extends AppCompatActivity {
     this.saleViewModel.setPayments(this.saleViewModel.getAllPaymentsType());
     this.saleViewModel.setProducts(this.saleViewModel.getAllProducts());
 
+    this.saleViewModel.getPayments().add(new Payment("Selecione uma forma de pagamento...", 0L));
+    Collections.sort(this.saleViewModel.getPayments(), Comparator.comparing(Payment::getId));
     paymentsAdapter.addAll(this.saleViewModel.getPayments());
     productsAdapter.addAll(this.saleViewModel.getAllProducts());
-
     spnPayment.setAdapter(paymentsAdapter);
     actProductId.setThreshold(1); // will start working from first character
     actProductId.setAdapter(productsAdapter);
@@ -507,45 +510,58 @@ public class SaleActivity extends AppCompatActivity {
   @OnClick(R.id.fb_save_sale)
   public void saveSale(View view) {
 
-    if (this.saleViewModel.getSaleItems().size() > 0) {
+    if (isPaymentValid()) {
+      if (this.saleViewModel.getSaleItems().size() > 0) {
 
-      MaterialDialog mDialog =
-          new MaterialDialog.Builder(this)
-              .setTitle("Salvar Venda?")
-              .setMessage("Você deseja realmente confirmar a venda?")
-              .setCancelable(true)
-              .setNegativeButton(
-                  "Não",
-                  R.mipmap.ic_clear_black_48dp,
-                      (dialogInterface, which)->dialogInterface.dismiss())
-              .setPositiveButton(
-                  "Salvar",
-                  R.mipmap.ic_save_white_48dp,
-                  (dialogInterface, which) -> {
-                    if (!this.saleViewModel.isUpdate()) {
+        MaterialDialog mDialog =
+                new MaterialDialog.Builder(this)
+                        .setTitle("Salvar Venda?")
+                        .setMessage("Você deseja realmente confirmar a venda?")
+                        .setCancelable(true)
+                        .setNegativeButton(
+                                "Não",
+                                R.mipmap.ic_clear_black_48dp,
+                                (dialogInterface, which)->dialogInterface.dismiss())
+                        .setPositiveButton(
+                                "Salvar",
+                                R.mipmap.ic_save_white_48dp,
+                                (dialogInterface, which)->{
+                                  if (!this.saleViewModel.isUpdate()) {
 
-                      try {
-                        this.saleViewModel.setSale(this.saleViewModel.getSaleToInsert());
-                      } catch (ParseException e) {
-                        e.printStackTrace();
-                      }
+                                    try {
+                                      this.saleViewModel.setSale(this.saleViewModel.getSaleToInsert());
+                                    } catch (ParseException e) {
+                                      e.printStackTrace();
+                                    }
 
-                      new InsertSaleItensTask(this.saleViewModel, this).execute();
+                                    new InsertSaleItensTask(this.saleViewModel, this).execute();
 
-                    } else {
-                      this.saleViewModel.configSaleToUpdate();
-                      new UpdateSaleItensTask(this.saleViewModel, this).execute();
-                    }
+                                  } else {
+                                    this.saleViewModel.configSaleToUpdate();
+                                    new UpdateSaleItensTask(this.saleViewModel, this).execute();
+                                  }
 
-                    dialogInterface.dismiss();
-                  })
-              .build();
+                                  dialogInterface.dismiss();
+                                })
+                        .build();
 
-      mDialog.show();
+        mDialog.show();
 
+      } else {
+        abstractActivity.showMessage(this, "Itens não adicionados!");
+      }
     } else {
-      abstractActivity.showMessage(this, "Itens não adicionados!");
+
+      abstractActivity.showMessage(this, "Por favor,selecione uma forma de pagamento!");
+
     }
+
+
+  }
+
+  private boolean isPaymentValid() {
+
+    return !this.saleViewModel.getPaymentSelected().getId().equals(0L);
   }
 
   /*Atualiza o recycle view*/
@@ -553,7 +569,9 @@ public class SaleActivity extends AppCompatActivity {
     saleItemAdapter.notifyDataSetChanged();
   }
 
-  /** Realiza a validacao dos itens antes da insercao */
+  /**
+   * Realiza a validacao dos itens antes da insercao
+   */
   private boolean isValidItem() {
     if (TextUtils.isEmpty(edtQtd.getText().toString())) {
       edtQtd.setError("Quantidade Obrigatória!");

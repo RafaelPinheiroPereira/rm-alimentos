@@ -396,7 +396,7 @@ public class SaleActivity extends AppCompatActivity {
     this.saleViewModel.setPayments(this.saleViewModel.getAllPaymentsType());
     this.saleViewModel.setProducts(this.saleViewModel.getAllProducts());
 
-    this.saleViewModel.getPayments().add(new Payment("Selecione uma forma de pagamento...", 0L));
+    this.saleViewModel.getPayments().add(new Payment("Selecionar Forma de Pagamento ...", 0L));
     Collections.sort(this.saleViewModel.getPayments(), Comparator.comparing(Payment::getId));
     paymentsAdapter.addAll(this.saleViewModel.getPayments());
     productsAdapter.addAll(this.saleViewModel.getAllProducts());
@@ -420,7 +420,7 @@ public class SaleActivity extends AppCompatActivity {
         "  Nome Fantasia: " + this.saleViewModel.getClient().getFantasyName());
     this.txtCity.setText("Cidade: " + this.saleViewModel.getClient().getAdress().getCity());
     this.txtAdress.setText(
-        " Endereço: "
+        "Endereço: "
             + this.saleViewModel.getClient().getAdress().getDescription()
             + ", "
             + this.saleViewModel.getClient().getAdress().getNeighborhood()

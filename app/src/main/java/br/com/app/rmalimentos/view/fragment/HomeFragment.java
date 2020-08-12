@@ -373,7 +373,7 @@ public class HomeFragment extends Fragment
               routes -> {
                 routesAdapter =
                     new ArrayAdapter(getContext(), android.R.layout.simple_list_item_1, routes);
-                routes.add(new Route("Por favor, selecione uma rota...", 0L));
+                routes.add(new Route("Selecionar Rota...", 0L));
                 Collections.sort(routes, Comparator.comparing(Route::getId));
                 routeSpinner.setAdapter(routesAdapter);
                 routeSpinner.setSelection(this.getRouteSpinnerPosition());

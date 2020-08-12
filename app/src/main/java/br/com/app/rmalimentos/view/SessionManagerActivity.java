@@ -11,19 +11,13 @@ public class SessionManagerActivity extends AppCompatActivity {
 
     SessionManagerViewModel sessionManagerViewModel;
 
-    AbstractActivity abstractActivity;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         sessionManagerViewModel = new ViewModelProvider(this).get(SessionManagerViewModel.class);
-        try {
-            abstractActivity = Singleton.getInstance(AbstractActivity.class);
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
@@ -31,8 +25,7 @@ public class SessionManagerActivity extends AppCompatActivity {
         super.onStart();
 
         if (this.sessionManagerViewModel.checkedLogin()) {
-            AbstractActivity.navigateToActivity(
-                    getApplicationContext(),
+            startActivity(
                     new Intent(SessionManagerActivity.this, HomeActivity.class));
         } else {
             startActivity(new Intent(SessionManagerActivity.this, LoginActivity.class));

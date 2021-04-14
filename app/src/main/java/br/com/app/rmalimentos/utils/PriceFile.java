@@ -39,7 +39,7 @@ public class PriceFile extends  FileManager {
             price.setProductId(Long.valueOf(line.substring(0, 4)));
             price.setUnityCode(line.substring(4, 7).trim());
             price.setPaymentId(Long.valueOf(line.substring(7, 10).trim()));
-            price.setValue(Double.valueOf(line.substring(11).replace(",", ".")));
+            price.setValue(MonetaryFormatting.convertMonetaryValueStringToDouble(line.substring(11)));
             prices.add(price);
         }
         this.setPrices(prices);

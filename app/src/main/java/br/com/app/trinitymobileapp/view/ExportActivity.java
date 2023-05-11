@@ -117,6 +117,7 @@ public class ExportActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        mToolbar.setTitle("Trinity Mobile - Exportação");
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }

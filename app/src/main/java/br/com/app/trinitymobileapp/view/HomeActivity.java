@@ -175,7 +175,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        toolbar.setTitle(getResources().getString(R.string.app_name));
+        toolbar.setTitle("Trinity Mobile - Home");
         setSupportActionBar(toolbar);
     }
 }

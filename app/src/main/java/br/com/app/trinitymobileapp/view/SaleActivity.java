@@ -458,7 +458,7 @@ public class SaleActivity extends AppCompatActivity {
   }
 
   private void initViews() {
-    toolbar.setTitle(getResources().getString(R.string.app_name));
+    toolbar.setTitle("Trinity Mobile - Pedidos");
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

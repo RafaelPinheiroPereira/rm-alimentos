@@ -458,7 +458,7 @@ public class SaleActivity extends AppCompatActivity {
   }
 
   private void initViews() {
-    toolbar.setTitle("Trinity Mobile - R&M Alimentos");
+    toolbar.setTitle(getResources().getString(R.string.app_name));
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);

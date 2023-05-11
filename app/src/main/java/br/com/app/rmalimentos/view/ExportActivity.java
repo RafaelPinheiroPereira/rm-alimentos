@@ -128,7 +128,7 @@ public class ExportActivity extends AppCompatActivity {
             LiveData<List<Sale>> salesListLiveData = this.exportViewModel.searchDataToExportByDate();
             salesListLiveData.observe(this, sales->{
                 if (sales.size() > 0) {
-                    //vou procurar os itens de cada vendas e preencher
+
                     exportViewModel.setSales(sales);
                     exportViewModel.loadAllSaleItem();
                     exportViewModel.exportData();

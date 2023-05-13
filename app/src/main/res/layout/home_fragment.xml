@@ -20,7 +20,7 @@
         android:orientation="horizontal">
 
         <Spinner
-            android:layout_width="210dp"
+            android:layout_width="250dp"
             android:layout_height="match_parent"
             android:id="@+id/spn_route"
             android:textAlignment="textStart"

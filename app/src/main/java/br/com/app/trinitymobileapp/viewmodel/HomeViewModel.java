@@ -52,13 +52,13 @@ public class HomeViewModel extends AndroidViewModel {
     super(application);
     routeRepository = new RouteRepository(application);
     clientRepository = new ClientRepository(application);
-    productRepository= new ProductRepository(application);
-    unityRepository= new UnityRepository(application);
-    paymentRepository= new PaymentRepository(application);
-    priceRepository= new PriceRepository(application);
+    productRepository = new ProductRepository(application);
+    unityRepository = new UnityRepository(application);
+    paymentRepository = new PaymentRepository(application);
+    priceRepository = new PriceRepository(application);
     fileManagerRepository = Singleton.getInstance(FileManagerRepository.class);
-      saleRepository = new SaleRepository(application);
-      employeeRepository = new EmployeeRepository(application);
+    saleRepository = new SaleRepository(application);
+    employeeRepository = new EmployeeRepository(application);
 
   }
 

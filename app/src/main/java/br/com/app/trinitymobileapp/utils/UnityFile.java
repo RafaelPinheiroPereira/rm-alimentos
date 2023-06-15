@@ -1,5 +1,7 @@
 package br.com.app.trinitymobileapp.utils;
 
+import android.util.Log;
+
 import br.com.app.trinitymobileapp.model.entity.Unity;
 import java.io.BufferedReader;
 import java.io.File;
@@ -19,6 +21,7 @@ public class UnityFile extends FileManager {
   @Override
   public void readFile(final File file)
       throws IOException, IllegalAccessException, InstantiationException {
+
     String line;
     FileInputStream fileInputStream = new FileInputStream(file);
     BufferedReader br =
@@ -27,16 +30,18 @@ public class UnityFile extends FileManager {
     while ((line = br.readLine()) != null && !line.equals("")) {
 
       Unity unity = new Unity();
-
       unity.setProductId(Long.valueOf(line.substring(0, 4)));
       unity.setCode(line.substring(4, 7).trim());
+      unity.setId(line.substring(0, 4).concat(unity.getCode()));
       unity.setStandard(line.substring(7, 8).trim());
       unity.setMultiple(Float.parseFloat(line.substring(10, 16).replaceAll(",", ".").trim()));
       unity.setWeight(Float.parseFloat(line.substring(16).replaceAll(",", ".").trim()));
       unities.add(unity);
     }
 
-    this.setUnities(unities);
+
+
+
   }
 
   public List<Unity> getUnities() {

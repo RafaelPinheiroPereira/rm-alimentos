@@ -14,6 +14,8 @@ public abstract class PriceDAO  extends GenericDAO<Price> {
 
     @Query("select * from price order by id")
     public abstract LiveData<List<Price>> getAll();
+    @Query("select * from price  where id = :id order by id")
+    public abstract Price getById(String id);
     @Query("select * from price where product_id = :productId and unity_code like :unityCode  order by id")
     public abstract Price findPriceByUnitAndProduct(final Long productId, final String unityCode);
     private class OperationsAsyncTask extends AsyncTask<Price, Void, Void> {

@@ -338,13 +338,17 @@ public class SaleActivity extends AppCompatActivity {
     cetPrice.setEnabled(true);
 
     this.saleViewModel.setProductSelected(productsAdapter.getItem(position));
+
     List<Unity> unities =
             saleViewModel.loadUnitiesByProduct(this.saleViewModel.getProductSelected());
+
     this.saleViewModel.setUnities(unities);
 
+    if(unitiesAdapter.getCount()>0) unitiesAdapter.clear();
     unitiesAdapter.addAll(this.saleViewModel.getUnities());
-
     spnUnities.setAdapter(unitiesAdapter);
+    unitiesAdapter.notifyDataSetChanged();
+
   }
 
   /*Configura os componentes para a criacao da venda*/

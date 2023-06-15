@@ -105,10 +105,12 @@ public class SaleViewModel extends AndroidViewModel {
   }
 
     public Price getPriceByUnitAndProduct() {
-    return this.priceRepository.findPriceByUnitAndProduct(getProductSelected(), getUnitySelected());
+    Price price = this.priceRepository.findPriceByUnitAndProduct(getProductSelected(), getUnitySelected());
+    return price;
   }
 
   public List<Unity> loadUnitiesByProduct(final Product product) {
+
     return this.unityRepository.findUnitiesByProduct(product);
   }
 

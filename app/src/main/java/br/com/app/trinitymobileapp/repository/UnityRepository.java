@@ -1,11 +1,15 @@
 package br.com.app.trinitymobileapp.repository;
 
 import android.app.Application;
+import android.util.Log;
+
 import androidx.lifecycle.LiveData;
 import br.com.app.trinitymobileapp.AppDataBase;
 import br.com.app.trinitymobileapp.model.dao.UnityDAO;
 import br.com.app.trinitymobileapp.model.entity.Product;
 import br.com.app.trinitymobileapp.model.entity.Unity;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -34,8 +38,12 @@ public class UnityRepository {
     }
 
     public void saveAll(final List<Unity> unitys) {
-
-            this.unityDAO.save(unitys.toArray(new Unity[unitys.size()]));
-
+            unitys.forEach(item->{
+                if (this.unityDAO.getById(item.getId()) == null) {
+                    this.unityDAO.save(item);
+                } else {
+                    this.unityDAO.update(item);
+                }
+            });
     }
 }

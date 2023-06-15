@@ -37,7 +37,7 @@ import br.com.app.trinitymobileapp.model.entity.Unity;
                 SaleItem.class,
                 Unity.class
         },
-        version = 1)
+        version = 3)
 @TypeConverters({Converters.class})
 public abstract class AppDataBase extends RoomDatabase {
 
@@ -63,7 +63,7 @@ public abstract class AppDataBase extends RoomDatabase {
                 if (mAppDataBaseInstance == null) {
                     mAppDataBaseInstance =
                             Room.databaseBuilder(
-                                    context.getApplicationContext(), AppDataBase.class, "rm_alimentos_database")
+                                    context.getApplicationContext(), AppDataBase.class, "trinity_database")
                                     .fallbackToDestructiveMigration()
                                     .allowMainThreadQueries()
                                     .build();

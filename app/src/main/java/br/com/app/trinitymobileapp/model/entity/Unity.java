@@ -12,9 +12,9 @@ public class Unity implements Serializable {
   @ColumnInfo(name = "code")
   private String code;
 
-  @PrimaryKey(autoGenerate = true)
+  @PrimaryKey
   @NonNull
-  private Long id;
+  private String id;
 
   @ColumnInfo(name = "multiple")
   private float multiple;
@@ -29,11 +29,11 @@ public class Unity implements Serializable {
   private float weight;
 
   @NonNull
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(@NonNull final Long id) {
+  public void setId(@NonNull String id) {
     this.id = id;
   }
 

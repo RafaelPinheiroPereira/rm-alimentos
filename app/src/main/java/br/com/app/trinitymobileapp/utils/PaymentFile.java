@@ -31,7 +31,7 @@ public class PaymentFile extends  FileManager {
 
         }
 
-        this.setPayments(payments);
+
     }
 
     public List<Payment> getPayments() {

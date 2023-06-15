@@ -53,7 +53,7 @@ public  class ProductFile extends FileManager {
       products.add(product);
     }
 
-    this.setProducts(products);
+
   }
 
   public List<Product> getProducts() {

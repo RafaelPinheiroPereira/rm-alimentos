@@ -14,7 +14,7 @@ public class Price implements Serializable {
 
     @PrimaryKey
     @NonNull
-    private Long id;
+    private String id;
 
     @ColumnInfo(name = "payment_id")
     private long paymentId;
@@ -26,11 +26,11 @@ public class Price implements Serializable {
     private String unityCode;
 
     @NonNull
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(@NonNull final Long id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 

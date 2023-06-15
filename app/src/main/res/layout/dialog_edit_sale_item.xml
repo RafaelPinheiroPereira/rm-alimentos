@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:text="Cancelar"
                     android:textColor="#fff"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     app:backgroundTint="@color/brand_red"
                     app:icon="@mipmap/ic_clear_black_48dp" />
 
@@ -157,7 +157,7 @@
                     android:layout_marginStart="30dp"
                     android:text="Alterar"
                     android:textColor="#fff"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     app:backgroundTint="@color/fab"
                     app:icon="@mipmap/ic_save_white_48dp" />
 

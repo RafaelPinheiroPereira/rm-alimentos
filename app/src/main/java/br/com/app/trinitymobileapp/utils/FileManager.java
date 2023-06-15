@@ -23,7 +23,7 @@ public class FileManager implements IFileManager {
       File file = new File(Constants.APP_DIRECTORY, Constants.LOG_FILE);
       FileOutputStream pen = new FileOutputStream(file);
       try {
-        pen.write("R&M-Alimentos LTDA".getBytes());
+        pen.write("Trinity Mobile App".getBytes());
         pen.flush();
         pen.close();
       } catch (IOException e) {

@@ -14,7 +14,9 @@ public abstract class UnityDAO extends  GenericDAO<Unity> {
 
     @Query("select * from unity order by id")
     public abstract LiveData<List<Unity>> getAll();
-    @Query("select * from unity  where product_id=:productId   order by standard desc")
+    @Query("select * from unity where id =:id order by id")
+    public abstract Unity getById(String id);
+    @Query("select * from unity  where product_id = :productId order by standard desc")
     public abstract List<Unity> findUnitiesByProduct(final Long productId);
 
     private class OperationsAsyncTask extends AsyncTask<Unity, Void, Void> {

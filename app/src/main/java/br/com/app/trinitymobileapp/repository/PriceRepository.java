@@ -32,8 +32,12 @@ public class PriceRepository {
     }
 
     public void saveAll(final List<Price> prices) {
-
-            this.priceDAO.save(prices.toArray(new Price[prices.size()]));
-
+            prices.forEach(item->{
+                if(this.priceDAO.getById(item.getId())==null){
+                    this.priceDAO.save(item);
+                }else{
+                    this.priceDAO.update(item);
+                }
+            });
     }
 }

@@ -17,15 +17,7 @@ public class PriceFile extends  FileManager {
     public PriceFile() {
     }
 
-    public List<Price> getPrices() {
-        return prices;
-    }
 
-
-
-    private void setPrices(final List<Price> prices) {
-        this.prices = prices;
-    }
 
     @Override
     public void readFile(final File file) throws IOException {
@@ -39,9 +31,17 @@ public class PriceFile extends  FileManager {
             price.setProductId(Long.valueOf(line.substring(0, 4)));
             price.setUnityCode(line.substring(4, 7).trim());
             price.setPaymentId(Long.valueOf(line.substring(7, 10).trim()));
+            price.setId(line.substring(0, 4).concat(price.getUnityCode()));
             price.setValue(MonetaryFormatting.convertMonetaryValueStringToDouble(line.substring(11)));
             prices.add(price);
         }
-        this.setPrices(prices);
+
+    }
+
+    public List<Price> getPrices() {
+        return prices;
+    }
+    private void setPrices(final List<Price> prices) {
+        this.prices = prices;
     }
 }

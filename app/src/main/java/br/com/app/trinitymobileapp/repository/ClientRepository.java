@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData;
 import br.com.app.trinitymobileapp.AppDataBase;
 import br.com.app.trinitymobileapp.model.dao.ClientDAO;
 import br.com.app.trinitymobileapp.model.entity.Client;
+import br.com.app.trinitymobileapp.model.entity.Price;
+
 import java.util.Date;
 import java.util.List;
 
@@ -33,9 +35,16 @@ public class ClientRepository {
         return clientDAO.getAll();
     }
 
-    public void saveAll(final List<Client> clients) {
 
-        this.clientDAO.insert(clients.toArray(new Client[clients.size()]));
+        public void saveAll(final List<Client> clients) {
+            clients.forEach(item->{
+                if(this.clientDAO.getById(item.getId())==null){
+                    this.clientDAO.save(item);
+                }else{
+                    this.clientDAO.update(item);
+                }
+            });
+
 
     }
 

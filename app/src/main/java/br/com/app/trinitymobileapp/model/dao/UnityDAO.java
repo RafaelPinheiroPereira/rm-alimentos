@@ -1,21 +1,25 @@
 package br.com.app.trinitymobileapp.model.dao;
 
 import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
+
 import br.com.app.trinitymobileapp.model.entity.Unity;
+
 import java.util.List;
 
 @Dao
-public abstract class UnityDAO extends  GenericDAO<Unity> {
-
+public abstract class UnityDAO extends GenericDAO<Unity> {
 
 
     @Query("select * from unity order by id")
     public abstract LiveData<List<Unity>> getAll();
+
     @Query("select * from unity where id =:id order by id")
     public abstract Unity getById(String id);
+
     @Query("select * from unity  where product_id = :productId order by standard desc")
     public abstract List<Unity> findUnitiesByProduct(final Long productId);
 
@@ -32,6 +36,7 @@ public abstract class UnityDAO extends  GenericDAO<Unity> {
             return null;
         }
     }
+
     private class InsertAsyncTask extends OperationsAsyncTask {
 
         InsertAsyncTask(UnityDAO routeDAO) {
@@ -44,6 +49,7 @@ public abstract class UnityDAO extends  GenericDAO<Unity> {
             return null;
         }
     }
+
     @Override
     public void save(final Unity obj) {
 

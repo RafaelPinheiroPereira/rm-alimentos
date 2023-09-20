@@ -1,9 +1,12 @@
 package br.com.app.trinitymobileapp.model.dao;
 
 import android.os.AsyncTask;
+
 import androidx.room.Dao;
 import androidx.room.Query;
+
 import br.com.app.trinitymobileapp.model.entity.Product;
+
 import java.util.List;
 
 @Dao
@@ -13,6 +16,7 @@ public abstract class ProductDAO extends GenericDAO<Product> {
 
     @Query("select * from product order by id")
     public abstract List<Product> getAll();
+
     private class OperationsAsyncTask extends AsyncTask<Product, Void, Void> {
 
         ProductDAO mAsyncTaskDao;
@@ -26,6 +30,7 @@ public abstract class ProductDAO extends GenericDAO<Product> {
             return null;
         }
     }
+
     private class InsertAsyncTask extends OperationsAsyncTask {
 
         InsertAsyncTask(ProductDAO productDAO) {
@@ -38,6 +43,7 @@ public abstract class ProductDAO extends GenericDAO<Product> {
             return null;
         }
     }
+
     @Override
     public void save(final Product obj) {
 

@@ -1,23 +1,28 @@
 package br.com.app.trinitymobileapp.model.dao;
 
 import android.os.AsyncTask;
+
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
+
 import br.com.app.trinitymobileapp.model.entity.Price;
+
 import java.util.List;
 
 @Dao
-public abstract class PriceDAO  extends GenericDAO<Price> {
-
+public abstract class PriceDAO extends GenericDAO<Price> {
 
 
     @Query("select * from price order by id")
     public abstract LiveData<List<Price>> getAll();
+
     @Query("select * from price  where id = :id order by id")
     public abstract Price getById(String id);
+
     @Query("select * from price where product_id = :productId and unity_code like :unityCode  order by id")
     public abstract Price findPriceByUnitAndProduct(final Long productId, final String unityCode);
+
     private class OperationsAsyncTask extends AsyncTask<Price, Void, Void> {
 
         PriceDAO mAsyncTaskDao;
@@ -31,6 +36,7 @@ public abstract class PriceDAO  extends GenericDAO<Price> {
             return null;
         }
     }
+
     private class InsertAsyncTask extends OperationsAsyncTask {
 
         InsertAsyncTask(PriceDAO priceDAO) {
@@ -43,6 +49,7 @@ public abstract class PriceDAO  extends GenericDAO<Price> {
             return null;
         }
     }
+
     @Override
     public void save(final Price obj) {
 

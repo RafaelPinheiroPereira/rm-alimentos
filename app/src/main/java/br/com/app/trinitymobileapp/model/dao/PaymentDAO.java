@@ -4,6 +4,8 @@ import android.os.AsyncTask;
 import androidx.room.Dao;
 import androidx.room.Query;
 import br.com.app.trinitymobileapp.model.entity.Payment;
+import br.com.app.trinitymobileapp.model.entity.Product;
+
 import java.util.List;
 
 @Dao
@@ -12,6 +14,12 @@ public abstract  class PaymentDAO  extends GenericDAO<Payment> {
 
     @Query("select * from payment order by id")
     public abstract List<Payment> getAll();
+
+
+    @Query("select * from payment  where id = :paymentId order by id")
+    public abstract Payment getById(final long paymentId);
+
+
     private class OperationsAsyncTask extends AsyncTask<Payment, Void, Void> {
 
         PaymentDAO mAsyncTaskDao;

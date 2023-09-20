@@ -1,10 +1,14 @@
 package br.com.app.trinitymobileapp.repository;
 
 import android.app.Application;
+
 import androidx.lifecycle.LiveData;
+
 import br.com.app.trinitymobileapp.AppDataBase;
 import br.com.app.trinitymobileapp.model.dao.ProductDAO;
 import br.com.app.trinitymobileapp.model.entity.Product;
+import br.com.app.trinitymobileapp.model.entity.Route;
+
 import java.util.List;
 
 public class ProductRepository {
@@ -28,9 +32,15 @@ public class ProductRepository {
         return productDAO.getAll();
     }
 
-    public void saveAll(final List<Product> products) {
 
-            this.productDAO.save(products.toArray(new Product[products.size()]));
+    public void saveAll(final List<Product> products) {
+        products.forEach(item -> {
+            if (this.productDAO.findProductById(item.getId()) == null) {
+                this.productDAO.save(item);
+            } else {
+                this.productDAO.update(item);
+            }
+        });
 
     }
 }

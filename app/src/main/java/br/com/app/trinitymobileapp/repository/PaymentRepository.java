@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData;
 import br.com.app.trinitymobileapp.AppDataBase;
 import br.com.app.trinitymobileapp.model.dao.PaymentDAO;
 import br.com.app.trinitymobileapp.model.entity.Payment;
+import br.com.app.trinitymobileapp.model.entity.Product;
+
 import java.util.List;
 
 public class PaymentRepository {
@@ -24,9 +26,16 @@ public class PaymentRepository {
         return paymentDAO.getAll();
     }
 
-    public void saveAll(final List<Payment> payments) {
 
-            this.paymentDAO.save(payments.toArray(new Payment[payments.size()]));
+
+    public void saveAll(final List<Payment> payments) {
+        payments.forEach(item -> {
+            if (this.paymentDAO.getById(item.getId()) == null) {
+                this.paymentDAO.save(item);
+            } else {
+                this.paymentDAO.update(item);
+            }
+        });
 
     }
 }

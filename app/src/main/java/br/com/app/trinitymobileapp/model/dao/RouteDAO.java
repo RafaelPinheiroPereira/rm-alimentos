@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
 
+import br.com.app.trinitymobileapp.model.entity.Client;
 import br.com.app.trinitymobileapp.model.entity.Route;
+
 import java.util.List;
 
 @Dao
@@ -14,6 +16,10 @@ public abstract class RouteDAO extends GenericDAO<Route> {
 
     @Query("select * from route ")
     public abstract LiveData<List<Route>> getAll();
+
+    @Query("select * from route  where id = :id order by id")
+    public abstract Route getById(Long id);
+
     private class OperationsAsyncTask extends AsyncTask<Route, Void, Void> {
 
         RouteDAO mAsyncTaskDao;
@@ -27,6 +33,7 @@ public abstract class RouteDAO extends GenericDAO<Route> {
             return null;
         }
     }
+
     private class InsertAsyncTask extends OperationsAsyncTask {
 
         InsertAsyncTask(RouteDAO routeDAO) {
@@ -39,6 +46,7 @@ public abstract class RouteDAO extends GenericDAO<Route> {
             return null;
         }
     }
+
     private class UpdateAsyncTask extends OperationsAsyncTask {
 
         UpdateAsyncTask(RouteDAO routeDAO) {
@@ -51,8 +59,9 @@ public abstract class RouteDAO extends GenericDAO<Route> {
             return null;
         }
     }
+
     @Override
     public void save(final Route obj) {
-           new RouteDAO.InsertAsyncTask(this).execute(obj);
+        new RouteDAO.InsertAsyncTask(this).execute(obj);
     }
 }

@@ -4,6 +4,7 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 import br.com.app.trinitymobileapp.AppDataBase;
 import br.com.app.trinitymobileapp.model.dao.RouteDAO;
+import br.com.app.trinitymobileapp.model.entity.Client;
 import br.com.app.trinitymobileapp.model.entity.Route;
 import java.util.List;
 
@@ -22,9 +23,15 @@ public class RouteRepository {
     return routeDAO.getAll();
   }
 
-  public void saveAll(final List<Route> routes) {
 
-          this.routeDAO.save(routes.toArray(new Route[routes.size()]));
+  public void saveAll(final List<Route> routes) {
+    routes.forEach(item -> {
+      if (this.routeDAO.getById(item.getId()) == null) {
+        this.routeDAO.save(item);
+      } else {
+        this.routeDAO.update(item);
+      }
+    });
 
   }
 }
